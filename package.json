@@ -1,0 +1,16 @@
+{
+  "name": "vape",
+  "version": "0.0.1",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-register": "^6.26.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
