@@ -1,12 +1,12 @@
 import {Router} from 'express';
-import * as VapeMixController from '../controllers/vapemix.controller';
+import * as MixController from '../controllers/mix.controller';
 const router = Router();
 
 router.route('/').get((req, res) => {
   res.send({message: 'Hello from API'});
 });
 
-// router.route('/books').get(BookController.getBooks); //get all books
+router.route('/mix').get(VapeMixController.getMix); //get all books
 // router.route('/books/:bookcode').get(BookController.getBook); // get one book
 // router.route('/books/:bookcode').post(BookController.addBook); // add one book
 // router.route('/books/:bookcode').delete(BookController.deleteBook); // delete book

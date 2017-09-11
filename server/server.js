@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import vapemixes from './routes/vapemixes.routes';
+import mixes from './routes/mixes.routes';
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // });
 
 
-app.use('/api', vapemixes);
+app.use('/api', mixes);
 
 app.listen(3000, () => {
   console.log('start server on port 3000');
