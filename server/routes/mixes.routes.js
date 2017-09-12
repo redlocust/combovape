@@ -6,11 +6,11 @@ router.route('/').get((req, res) => {
   res.send({message: 'Hello from API'});
 });
 
-router.route('/mix').get(VapeMixController.getMix); //get all books
-// router.route('/books/:bookcode').get(BookController.getBook); // get one book
-// router.route('/books/:bookcode').post(BookController.addBook); // add one book
-// router.route('/books/:bookcode').delete(BookController.deleteBook); // delete book
-// router.route('/books').delete(BookController.deleteBooks); //delete all books
-// router.route('/books/:bookcode').put(BookController.updateBook); // update one book
+router.route('/mixes').get(MixController.getMixes); //get all mixes
+router.route('/mixes/:mixcode').get(MixController.getMix); // get one mix
+router.route('/mixes/:mixcode').post(MixController.addMix); // add one mix
+router.route('/mixes/:mixcode').delete(MixController.deleteMix); // delete mix
+router.route('/mixes').delete(MixController.deleteMixes); //delete all mix
+router.route('/mixes/:mixcode').put(MixController.updateMix); // update one mix
 
 export default router;
