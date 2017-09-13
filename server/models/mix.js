@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/combovape',
   {
     useMongoClient: true
@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost:27017/combovape',
     }
   });
 
-let MixSchema = mongoose.Schema({
+let mixSchema = mongoose.Schema({
   title: {
     type: String,
     required: true
@@ -23,6 +23,6 @@ let MixSchema = mongoose.Schema({
   }
 });
 
-const Mix = mongoose.model('Mix', MixSchema);
+let Mix = mongoose.model('Mix', mixSchema);
 
 export default Mix;
