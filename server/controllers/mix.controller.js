@@ -7,7 +7,7 @@ export function getMixes(req, res) {
         if (err) {
             res.status(500).send();
         }
-        res.json({mixes});
+        res.json(mixes);
     })
 }
 
