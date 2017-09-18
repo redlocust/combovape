@@ -32735,6 +32735,27 @@ var Main = function (_Component) {
       this.updateStateWithData();
     }
   }, {
+    key: 'onSeedClick',
+    value: function onSeedClick(e) {
+      e.preventDefault();
+      var stockId = "test123";
+
+      fetch("/api/mixes/", {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({ code: stockId })
+      });
+      // .then(function (res) {
+      //   console.log('completed');
+      // })
+      // .catch(function (res) {
+      //   console.log(res)
+      // });
+    }
+  }, {
     key: 'render',
     value: function render() {
 
@@ -32767,7 +32788,12 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              _react2.default.createElement(_MixList2.default, { dataArray: this.state.dataArray })
+              _react2.default.createElement(_MixList2.default, { dataArray: this.state.dataArray }),
+              _react2.default.createElement(
+                'button',
+                { type: 'submit', onClick: this.onSeedClick },
+                'Seed'
+              )
             )
           )
         )

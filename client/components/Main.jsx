@@ -37,6 +37,27 @@ class Main extends Component {
     this.updateStateWithData();
   }
 
+  onSeedClick(e) {
+    e.preventDefault();
+    let stockId = "test123";
+
+    fetch("/api/mixes/",
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({code: stockId})
+      })
+      // .then(function (res) {
+      //   console.log('completed');
+      // })
+      // .catch(function (res) {
+      //   console.log(res)
+      // });
+  }
+
   render() {
 
     return (
@@ -52,6 +73,7 @@ class Main extends Component {
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
               <MixList dataArray={this.state.dataArray}/>
+              <button type="submit" onClick={this.onSeedClick}>Seed</button>
             </div>
           </div>
         </div>
