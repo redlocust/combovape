@@ -50,12 +50,12 @@ class Main extends Component {
         method: "POST",
         body: JSON.stringify({code: stockId})
       })
-      // .then(function (res) {
-      //   console.log('completed');
-      // })
-      // .catch(function (res) {
-      //   console.log(res)
-      // });
+      .then(function (res) {
+        console.log('completed');
+      })
+      .catch(function (res) {
+        console.log(res)
+      });
   }
 
   render() {
