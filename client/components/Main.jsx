@@ -4,12 +4,12 @@ import MixList from './MixList.jsx';
 class Main extends Component {
   constructor(props) {
     super(props);
+    this.onSeedClick = this.onSeedClick.bind(this);
     this.state = {
       dataArray: [],
       loading: true
     };
   }
-
 
   updateStateWithData() {
     let that = this;
@@ -18,6 +18,8 @@ class Main extends Component {
     this.setState({
       dataArray: [],
     });
+
+    console.log("update state");
 
     fetch(url)
       .then(function (response) {
@@ -31,16 +33,14 @@ class Main extends Component {
           });
   }
 
-
   componentWillMount() {
-    console.log("mount");
     this.updateStateWithData();
   }
 
   onSeedClick(e) {
     e.preventDefault();
     let stockId = "test123";
-
+    var that = this;
     fetch("/api/mixes/",
       {
         headers: {
@@ -52,6 +52,7 @@ class Main extends Component {
       })
       .then(function (res) {
         console.log('completed');
+        that.updateStateWithData();
       })
       .catch(function (res) {
         console.log(res)
