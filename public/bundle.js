@@ -32850,17 +32850,26 @@ var MixList = function (_Component) {
       var mixList = this.props.dataArray.map(function (mix) {
         return _react2.default.createElement(
           "div",
-          { className: "row" },
+          { className: "mix-item" },
           _react2.default.createElement(
             "div",
-            { className: "col-md-6 col-md-offset-3", key: mix.title },
+            { className: "mix-item__first-row row" },
             _react2.default.createElement(
               "div",
-              { className: "mixlist__item" },
+              { className: "col-lg-6" },
               _react2.default.createElement(
-                "p",
-                { className: "mixlist__name" },
+                "span",
+                { className: "mix-item__name" },
                 mix.title
+              )
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "col-lg-6" },
+              _react2.default.createElement(
+                "span",
+                { className: "mix-item__author" },
+                mix.author
               )
             )
           )
