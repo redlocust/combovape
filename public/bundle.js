@@ -32703,6 +32703,8 @@ var Main = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.onSeedClick = _this.onSeedClick.bind(_this);
+    _this.onDeleteClick = _this.onDeleteClick.bind(_this);
+
     _this.state = {
       dataArray: [],
       loading: true
@@ -32757,6 +32759,26 @@ var Main = function (_Component) {
       });
     }
   }, {
+    key: 'onDeleteClick',
+    value: function onDeleteClick(e) {
+      e.preventDefault();
+      var stockId = "test123";
+      var that = this;
+      fetch("/api/mixes/", {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+        body: JSON.stringify({ code: stockId })
+      }).then(function (res) {
+        console.log('completed');
+        that.updateStateWithData();
+      }).catch(function (res) {
+        console.log(res);
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
 
@@ -32794,6 +32816,11 @@ var Main = function (_Component) {
                 'button',
                 { type: 'submit', onClick: this.onSeedClick },
                 'Seed'
+              ),
+              _react2.default.createElement(
+                'button',
+                { type: 'submit', onClick: this.onDeleteClick },
+                'Delete All'
               )
             )
           )

@@ -4,7 +4,10 @@ import MixList from './MixList.jsx';
 class Main extends Component {
   constructor(props) {
     super(props);
+
     this.onSeedClick = this.onSeedClick.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
+
     this.state = {
       dataArray: [],
       loading: true
@@ -59,6 +62,28 @@ class Main extends Component {
       });
   }
 
+  onDeleteClick(e) {
+    e.preventDefault();
+    let stockId = "test123";
+    var that = this;
+    fetch("/api/mixes/",
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+        body: JSON.stringify({code: stockId})
+      })
+      .then(function (res) {
+        console.log('completed');
+        that.updateStateWithData();
+      })
+      .catch(function (res) {
+        console.log(res)
+      });
+  }
+
   render() {
 
     return (
@@ -75,6 +100,7 @@ class Main extends Component {
             <div className="text-center">
               <MixList dataArray={this.state.dataArray}/>
               <button type="submit" onClick={this.onSeedClick}>Seed</button>
+              <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
             </div>
           </div>
         </div>
