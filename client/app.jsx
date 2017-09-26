@@ -1,7 +1,13 @@
 import React from 'react';
 import {render} from 'react-dom';
-import Main from 'Main';
+import {Provider} from "react-redux";
+import {store} from "./store.js";
+import {router} from "./router.js";
 
 import 'bootstrap-loader';
 
-render(<Main/>,  document.getElementById('root'));
+render(
+  <Provider store={store}>
+    {router}
+  </Provider>,
+  document.getElementById('root'));

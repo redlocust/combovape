@@ -20,6 +20,11 @@ let mixSchema = mongoose.Schema({
   author: {
     type: String,
     required: true
+  },
+
+  recipe: {
+    type: String,
+    required: true
   }
 });
 
