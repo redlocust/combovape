@@ -23516,6 +23516,8 @@ var _store = __webpack_require__(109);
 
 var _router = __webpack_require__(252);
 
+__webpack_require__(860);
+
 __webpack_require__(276);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -62748,8 +62750,8 @@ var Nav = function (_Component) {
             ),
             _react2.default.createElement(
               'a',
-              { className: 'navbar-brand', href: '#' },
-              'Brand'
+              { className: 'navbar-brand navbar__brand-color', href: '#' },
+              'ComboVape'
             )
           ),
           _react2.default.createElement(
@@ -62764,7 +62766,7 @@ var Nav = function (_Component) {
                 _react2.default.createElement(
                   'a',
                   { href: '#' },
-                  'Link ',
+                  '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0440\u0435\u0446\u0435\u043F\u0442',
                   _react2.default.createElement(
                     'span',
                     { className: 'sr-only' },
@@ -62778,7 +62780,7 @@ var Nav = function (_Component) {
                 _react2.default.createElement(
                   'a',
                   { href: '#' },
-                  'Link'
+                  '\u0420\u0435\u0441\u0443\u0440\u0441\u044B'
                 )
               ),
               _react2.default.createElement(
@@ -62931,6 +62933,12 @@ var Nav = function (_Component) {
 }(_react.Component);
 
 exports.default = Nav;
+
+/***/ }),
+/* 860 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
