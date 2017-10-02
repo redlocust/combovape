@@ -19,9 +19,8 @@ export default class Nav extends Component {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li className="active"><a href="#">Создать рецепт<span className="sr-only">(current)</span></a></li>
-                <li><a href="#">Ресурсы</a></li>
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
+                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ресурсы <span className="caret"></span></a>
                   <ul className="dropdown-menu">
                     <li><Link to="/">Main</Link></li>
                     <li><Link to="/home">Home</Link></li>

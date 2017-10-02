@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import MixList from './MixList.jsx';
+import { connect } from "react-redux";
 
 class Main extends Component {
   constructor(props) {
@@ -36,8 +37,14 @@ class Main extends Component {
           });
   }
 
+  // componentWillMount() {
+  //   this.updateStateWithData();
+  // }
+
+  // pre-render logic
   componentWillMount() {
-    this.updateStateWithData();
+    // the first time we load the app, we need that users list
+    this.props.dispatch({type: 'MIXES_FETCH_LIST'});
   }
 
   onSeedClick(e) {
@@ -109,4 +116,10 @@ class Main extends Component {
   }
 }
 
-export default Main;
+// export the connected class
+function mapStateToProps(state) {
+  return {
+    mixes: state.mixes || [],
+  };
+}
+export default connect(mapStateToProps)(Main);
