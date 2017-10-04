@@ -2,17 +2,12 @@ import React, {Component} from 'react';
 import MixList from './MixList.jsx';
 import { connect } from "react-redux";
 
-class Main extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
     this.onSeedClick = this.onSeedClick.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
-
-    this.state = {
-      dataArray: [],
-      loading: true
-    };
   }
 
   updateStateWithData() {
@@ -92,6 +87,7 @@ class Main extends Component {
   }
 
   render() {
+    const {mixes, children} = this.props;
 
     return (
       <div className="container">
@@ -105,6 +101,7 @@ class Main extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
+              {console.log(this.props)}
               <MixList dataArray={this.state.dataArray}/>
               <button type="submit" onClick={this.onSeedClick}>Seed</button>
               <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
@@ -119,7 +116,7 @@ class Main extends Component {
 // export the connected class
 function mapStateToProps(state) {
   return {
-    mixes: state.mixes || [],
+    mixes: state.mixes || []
   };
 }
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps)(App);

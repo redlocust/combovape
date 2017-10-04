@@ -8,6 +8,7 @@ import "./stylesheets/main.scss";
 
 import 'bootstrap-loader';
 // render the main component
+console.log(store.getState());
 ReactDOM.render(
   <Provider store={store}>
       {router}
