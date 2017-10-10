@@ -58565,7 +58565,7 @@ function mixes() {
   var action = arguments[1];
 
   switch (action.type) {
-    case 'MIXES_LIST_SAVE':
+    case 'MIXES_LIST_GET':
       return action.mixes;
 
     case 'USERS_ADD_SAVE':
@@ -58612,9 +58612,9 @@ var _reactRouterDom = __webpack_require__(317);
 
 var _reactRouterRedux = __webpack_require__(178);
 
-var _App = __webpack_require__(831);
+var _Main = __webpack_require__(831);
 
-var _App2 = _interopRequireDefault(_App);
+var _Main2 = _interopRequireDefault(_Main);
 
 var _Nav = __webpack_require__(833);
 
@@ -58634,7 +58634,7 @@ var router = _react2.default.createElement(
     "div",
     null,
     _react2.default.createElement(_Nav2.default, null),
-    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _App2.default }),
+    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _Main2.default }),
     _react2.default.createElement(_reactRouterDom.Route, { path: "/home", component: _Home2.default })
   )
 );
@@ -59294,20 +59294,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_Component) {
-  _inherits(App, _Component);
+var Main = function (_Component) {
+  _inherits(Main, _Component);
 
-  function App(props) {
-    _classCallCheck(this, App);
+  function Main(props) {
+    _classCallCheck(this, Main);
 
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.onSeedClick = _this.onSeedClick.bind(_this);
     _this.onDeleteClick = _this.onDeleteClick.bind(_this);
     return _this;
   }
 
-  _createClass(App, [{
+  _createClass(Main, [{
     key: 'updateStateWithData',
     value: function updateStateWithData() {
       var that = this;
@@ -59384,9 +59384,7 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          mixes = _props.mixes,
-          children = _props.children;
+      var mixes = this.props.mixes;
 
 
       return _react2.default.createElement(
@@ -59418,8 +59416,8 @@ var App = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              console.log(this.props),
-              _react2.default.createElement(_MixList2.default, { dataArray: this.state.dataArray }),
+              console.log(mixes),
+              _react2.default.createElement(_MixList2.default, { dataArray: mixes }),
               _react2.default.createElement(
                 'button',
                 { type: 'submit', onClick: this.onSeedClick },
@@ -59437,18 +59435,19 @@ var App = function (_Component) {
     }
   }]);
 
-  return App;
+  return Main;
 }(_react.Component);
 
 // export the connected class
 
 
 function mapStateToProps(state) {
+  console.log("state ", state);
   return {
-    mixes: state.mixes || []
+    mixes: [] || state.mixes
   };
 }
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Main);
 
 /***/ }),
 /* 832 */

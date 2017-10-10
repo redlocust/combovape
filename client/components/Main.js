@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import MixList from './MixList.jsx';
+import MixList from './MixList.js';
 import { connect } from "react-redux";
 
-class App extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
 
@@ -87,7 +87,7 @@ class App extends Component {
   }
 
   render() {
-    const {mixes, children} = this.props;
+    const {mixes} = this.props;
 
     return (
       <div className="container">
@@ -101,8 +101,8 @@ class App extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
-              {console.log(this.props)}
-              <MixList dataArray={this.state.dataArray}/>
+              {console.log(mixes)}
+              <MixList dataArray={mixes}/>
               <button type="submit" onClick={this.onSeedClick}>Seed</button>
               <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
             </div>
@@ -115,8 +115,9 @@ class App extends Component {
 
 // export the connected class
 function mapStateToProps(state) {
+  console.log("state ", state);
   return {
-    mixes: state.mixes || []
+    mixes: [] || state.mixes
   };
 }
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Main);
