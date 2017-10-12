@@ -1,7 +1,7 @@
 // users reducer
 export default function mixes(state = {}, action) {
   switch (action.type) {
-    case 'MIXES_LIST_GET':
+    case 'MIXES_LIST_SAVE':
       return action.mixes;
 
     case 'USERS_ADD_SAVE':
