@@ -5,6 +5,7 @@ import ApiMixes from "../api/mixes";
 export function* usersFetchList(action) {
   // call the api to get the users list
   const mixes = yield call(ApiMixes.getList);
+  console.log("form fetch", mixes);
 
   // save the users in state
   yield put({
