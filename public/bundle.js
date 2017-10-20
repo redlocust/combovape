@@ -60908,7 +60908,7 @@ function sagas() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.usersFetchList)];
+          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit)];
 
         case 2:
         case "end":
@@ -60928,7 +60928,8 @@ function sagas() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.usersFetchList = usersFetchList;
+exports.mixesFetchList = mixesFetchList;
+exports.mixesAddEdit = mixesAddEdit;
 
 var _effects = __webpack_require__(202);
 
@@ -60938,12 +60939,13 @@ var _mixes2 = _interopRequireDefault(_mixes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = /*#__PURE__*/regeneratorRuntime.mark(usersFetchList);
+var _marked = /*#__PURE__*/regeneratorRuntime.mark(mixesFetchList),
+    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
 
 // fetch the user's list
-function usersFetchList(action) {
+function mixesFetchList(action) {
   var mixes;
-  return regeneratorRuntime.wrap(function usersFetchList$(_context) {
+  return regeneratorRuntime.wrap(function mixesFetchList$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -60968,6 +60970,35 @@ function usersFetchList(action) {
       }
     }
   }, _marked, this);
+}
+
+// add/edit a user
+function mixesAddEdit(action) {
+  return regeneratorRuntime.wrap(function mixesAddEdit$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return (0, _effects.call)(_mixes2.default.addEdit);
+
+        case 2:
+          _context2.next = 4;
+          return (0, _effects.put)({
+            type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
+            mix: action.mix
+          });
+
+        case 4:
+
+          // success
+          action.callbackSuccess();
+
+        case 5:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2, this);
 }
 
 /***/ }),
@@ -61068,9 +61099,9 @@ var _Nav = __webpack_require__(852);
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
-var _Home = __webpack_require__(853);
+var _RecipeEdit = __webpack_require__(881);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _RecipeEdit2 = _interopRequireDefault(_RecipeEdit);
 
 var _NotFound = __webpack_require__(854);
 
@@ -61090,7 +61121,7 @@ var router = _react2.default.createElement(
       _reactRouterDom.Switch,
       null,
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _Main2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: "/home", component: _Home2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/recipe-edit", component: _RecipeEdit2.default })
     )
   )
 );
@@ -61763,35 +61794,10 @@ var Main = function (_Component) {
     return _this;
   }
 
+  // pre-render logic
+
+
   _createClass(Main, [{
-    key: 'updateStateWithData',
-    value: function updateStateWithData() {
-      var that = this;
-      var url = 'api/mixes';
-
-      this.setState({
-        dataArray: []
-      });
-
-      console.log("update state");
-
-      fetch(url).then(function (response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      }).then(function (dataArray) {
-        that.setState({ dataArray: dataArray });
-      });
-    }
-
-    // componentWillMount() {
-    //   this.updateStateWithData();
-    // }
-
-    // pre-render logic
-
-  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       // the first time we load the app, we need that users list
@@ -62071,9 +62077,9 @@ var Nav = function (_Component) {
                 'li',
                 { className: 'active' },
                 _react2.default.createElement(
-                  'a',
-                  { href: '#' },
-                  '\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0440\u0435\u0446\u0435\u043F\u0442',
+                  _reactRouterDom.Link,
+                  { to: '/recipe-edit' },
+                  '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0435\u0446\u0435\u043F\u0442',
                   _react2.default.createElement(
                     'span',
                     { className: 'sr-only' },
@@ -62185,9 +62191,9 @@ var Nav = function (_Component) {
                     'li',
                     null,
                     _react2.default.createElement(
-                      'a',
-                      { href: '#' },
-                      'Action'
+                      _reactRouterDom.Link,
+                      { to: '/recipe-edit' },
+                      '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0440\u0435\u0446\u0435\u043F\u0442'
                     )
                   ),
                   _react2.default.createElement(
@@ -62233,60 +62239,7 @@ var Nav = function (_Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 853 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(5);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Home = function (_Component) {
-  _inherits(Home, _Component);
-
-  function Home() {
-    _classCallCheck(this, Home);
-
-    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
-  }
-
-  _createClass(Home, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'row' },
-        _react2.default.createElement(
-          'div',
-          { className: 'col-md-12' },
-          'Home page'
-        )
-      );
-    }
-  }]);
-
-  return Home;
-}(_react.Component);
-
-exports.default = Home;
-
-/***/ }),
+/* 853 */,
 /* 854 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -65456,6 +65409,113 @@ var jQuery = __webpack_require__(34);
 }(jQuery);
 
 
+
+/***/ }),
+/* 880 */,
+/* 881 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(54);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RecipeEdit = function (_Component) {
+  _inherits(RecipeEdit, _Component);
+
+  // constructor
+  function RecipeEdit(props) {
+    _classCallCheck(this, RecipeEdit);
+
+    var _this = _possibleConstructorReturn(this, (RecipeEdit.__proto__ || Object.getPrototypeOf(RecipeEdit)).call(this, props));
+
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(RecipeEdit, [{
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      event.preventDefault();
+      this.props.dispatch({
+        type: 'MIXES_ADD_EDIT'
+        // mix: {
+        //   author: "SUPER-REDLOCUST"
+        // }
+      });
+      console.log("submit");
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'container' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this.handleSubmit },
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement(
+                'label',
+                { htmlFor: 'author' },
+                'Author:'
+              ),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'author' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement(
+                'label',
+                { htmlFor: 'title' },
+                'Title:'
+              ),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'title' })
+            ),
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'recipe' },
+              'Recipe:'
+            ),
+            _react2.default.createElement('textarea', { className: 'form-control', rows: '5', id: 'recipe' }),
+            _react2.default.createElement(
+              'button',
+              { type: 'submit', value: ' Send', className: 'btn btn-success', id: 'submit' },
+              'Submit'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return RecipeEdit;
+}(_react.Component);
+
+exports.default = (0, _reactRedux.connect)()(RecipeEdit);
 
 /***/ })
 /******/ ]);

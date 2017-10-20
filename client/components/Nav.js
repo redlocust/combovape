@@ -18,7 +18,7 @@ export default class Nav extends Component {
 
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
-                <li className="active"><a href="#">Создать рецепт<span className="sr-only">(current)</span></a></li>
+                <li className="active"><Link to="/recipe-edit">Добавить рецепт<span className="sr-only">(current)</span></Link></li>
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ресурсы <span className="caret"></span></a>
                   <ul className="dropdown-menu">
@@ -43,7 +43,7 @@ export default class Nav extends Component {
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
                   <ul className="dropdown-menu">
-                    <li><a href="#">Action</a></li>
+                    <li><Link to="/recipe-edit">Добавить рецепт</Link></li>
                     <li><a href="#">Another action</a></li>
                     <li><a href="#">Something else here</a></li>
                     <li role="separator" className="divider"></li>
