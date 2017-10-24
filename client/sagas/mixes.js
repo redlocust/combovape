@@ -3,7 +3,7 @@ import ApiMixes from "../api/mixes";
 
 // fetch the user's list
 export function* mixesFetchList(action) {
-  // call the api to get the users list
+  // call the api to get the mix list
   const mixes = yield call(ApiMixes.getList);
   console.log("form fetch", mixes);
 
@@ -14,18 +14,17 @@ export function* mixesFetchList(action) {
   });
 }
 
-// add/edit a user
+// add/edit a mix
 export function* mixesAddEdit(action) {
-  // call the api to add/edit the user
-  yield call(ApiMixes.addEdit);
+  // call the api to add/edit the mix
+  yield call(ApiMixes.addEdit, action.mix);
   //return action.callbackError("Some error");   // show an error when the API fails
+  console.log("action", action);
 
-  // update the state by adding/editing the user
+  //update the state by adding/editing the mix
   yield put({
-    type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
+    //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
+    type: 'MIXES_ADD_SAVE',
     mix: action.mix,
   });
-
-  // success
-  action.callbackSuccess();
 }

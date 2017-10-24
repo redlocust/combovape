@@ -38,18 +38,11 @@ export function deleteMixes(req, res) {
 
 export function addMix(req, res) {
 
-  let mixArray = [];
-
-  for (let i = 1; i <= 10; i++) {
-
-    let newMix = new Mix({
-      title: `${i} mix`,
-      author: `${i} author`,
-      cuid: cuid()
-    });
-
-    mixArray.push(newMix);
-  }
+  let mixArray = [{
+    author: req.body.author,
+    title: req.body.title,
+    recipe: req.body.recipe
+  }];
 
   Mix.insertMany(mixArray)
     .then((mixes) => {

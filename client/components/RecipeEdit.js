@@ -6,17 +6,25 @@ class RecipeEdit extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      author: '123',
+      title: '234',
+      recipe: '345'
+    }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit(e) {
+    e.preventDefault();
     this.props.dispatch({
       type: 'MIXES_ADD_EDIT',
-      // mix: {
-      //   author: "SUPER-REDLOCUST"
-      // }
+      mix: {
+        author: this.state.author,
+        title: this.state.title,
+        recipe: this.state.recipe
+      }
     });
-    console.log("submit");
+    console.log(this.state);
   }
 
 
@@ -27,14 +35,23 @@ class RecipeEdit extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="author">Author:</label>
-              <input type="text" className="form-control" id="author"/>
+              <input type="text" className="form-control" name="author" id="author" value={this.state.author}
+                     onChange={(e) => {
+                       this.setState({author: e.target.value})
+                     }}/>
             </div>
             <div className="form-group">
               <label htmlFor="title">Title:</label>
-              <input type="text" className="form-control" id="title"/>
+              <input type="text" className="form-control" name="title" id="title" value={this.state.title}
+                     onChange={(e) => {
+                       this.setState({title: e.target.value})
+                     }}/>
             </div>
             <label htmlFor="recipe">Recipe:</label>
-            <textarea className="form-control" rows="5" id="recipe"/>
+            <textarea className="form-control" rows="5" name="recipe" id="recipe" value={this.state.recipe}
+                      onChange={(e) => {
+                        this.setState({recipe: e.target.value})
+                      }}/>
             <button type="submit" value=" Send" className="btn btn-success" id="submit">Submit</button>
           </form>
         </div>

@@ -60599,14 +60599,14 @@ function mixes() {
     case 'MIXES_LIST_SAVE':
       return action.mixes;
 
-    case 'USERS_ADD_SAVE':
-      var user = action.user;
-      user.id = user.id || Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-      return [].concat(_toConsumableArray(state), [user]);
+    case 'MIXES_ADD_SAVE':
+      var mix = action.mix;
+      mix.id = mix.id || Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      return [].concat(_toConsumableArray(state), [mix]);
 
-    case 'USERS_EDIT_SAVE':
-      return state.map(function (user) {
-        return Number(user.id) === Number(action.user.id) ? _extends({}, action.user) : user;
+    case 'MIXES_EDIT_SAVE':
+      return state.map(function (mix) {
+        return Number(mix.id) === Number(action.mix.id) ? _extends({}, action.mix) : mix;
       });
       break;
 
@@ -60972,26 +60972,26 @@ function mixesFetchList(action) {
   }, _marked, this);
 }
 
-// add/edit a user
+// add/edit a mix
 function mixesAddEdit(action) {
   return regeneratorRuntime.wrap(function mixesAddEdit$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return (0, _effects.call)(_mixes2.default.addEdit);
+          return (0, _effects.call)(_mixes2.default.addEdit, action.mix);
 
         case 2:
-          _context2.next = 4;
+          //return action.callbackError("Some error");   // show an error when the API fails
+          console.log("action", action);
+
+          //update the state by adding/editing the mix
+          _context2.next = 5;
           return (0, _effects.put)({
-            type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
+            //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
+            type: 'MIXES_ADD_SAVE',
             mix: action.mix
           });
-
-        case 4:
-
-          // success
-          action.callbackSuccess();
 
         case 5:
         case "end":
@@ -61055,6 +61055,33 @@ var ApiUsers = function () {
       console.log("update state");
 
       return fetch(url).then(function (response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        console.log("in fetch", response);
+        return response.json();
+      });
+    }
+
+    // save new mix/ edited mix
+
+  }, {
+    key: "addEdit",
+    value: function addEdit() {
+
+      var mix = arguments[0];
+
+      var that = this;
+      var url = 'api/mixes';
+
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(mix)
+      }).then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
@@ -65448,24 +65475,34 @@ var RecipeEdit = function (_Component) {
     var _this = _possibleConstructorReturn(this, (RecipeEdit.__proto__ || Object.getPrototypeOf(RecipeEdit)).call(this, props));
 
     _this.handleSubmit = _this.handleSubmit.bind(_this);
+
+    _this.state = {
+      author: '123',
+      title: '234',
+      recipe: '345'
+    };
     return _this;
   }
 
   _createClass(RecipeEdit, [{
     key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      event.preventDefault();
+    value: function handleSubmit(e) {
+      e.preventDefault();
       this.props.dispatch({
-        type: 'MIXES_ADD_EDIT'
-        // mix: {
-        //   author: "SUPER-REDLOCUST"
-        // }
+        type: 'MIXES_ADD_EDIT',
+        mix: {
+          author: this.state.author,
+          title: this.state.title,
+          recipe: this.state.recipe
+        }
       });
-      console.log("submit");
+      console.log(this.state);
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'container' },
@@ -65483,7 +65520,10 @@ var RecipeEdit = function (_Component) {
                 { htmlFor: 'author' },
                 'Author:'
               ),
-              _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'author' })
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'author', id: 'author', value: this.state.author,
+                onChange: function onChange(e) {
+                  _this2.setState({ author: e.target.value });
+                } })
             ),
             _react2.default.createElement(
               'div',
@@ -65493,14 +65533,20 @@ var RecipeEdit = function (_Component) {
                 { htmlFor: 'title' },
                 'Title:'
               ),
-              _react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'title' })
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'title', id: 'title', value: this.state.title,
+                onChange: function onChange(e) {
+                  _this2.setState({ title: e.target.value });
+                } })
             ),
             _react2.default.createElement(
               'label',
               { htmlFor: 'recipe' },
               'Recipe:'
             ),
-            _react2.default.createElement('textarea', { className: 'form-control', rows: '5', id: 'recipe' }),
+            _react2.default.createElement('textarea', { className: 'form-control', rows: '5', name: 'recipe', id: 'recipe', value: this.state.recipe,
+              onChange: function onChange(e) {
+                _this2.setState({ recipe: e.target.value });
+              } }),
             _react2.default.createElement(
               'button',
               { type: 'submit', value: ' Send', className: 'btn btn-success', id: 'submit' },

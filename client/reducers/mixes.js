@@ -4,14 +4,14 @@ export default function mixes(state = {}, action) {
     case 'MIXES_LIST_SAVE':
       return action.mixes;
 
-    case 'USERS_ADD_SAVE':
-      const user = action.user;
-      user.id = user.id || Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-      return [...state, user];
+    case 'MIXES_ADD_SAVE':
+      const mix = action.mix;
+      mix.id = mix.id || Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      return [...state, mix];
 
-    case 'USERS_EDIT_SAVE':
-      return state.map(user =>
-        Number(user.id) === Number(action.user.id) ? {...action.user} : user
+    case 'MIXES_EDIT_SAVE':
+      return state.map(mix =>
+        Number(mix.id) === Number(action.mix.id) ? {...action.mix} : mix
       );
       break;
 
