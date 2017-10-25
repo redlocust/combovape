@@ -3,7 +3,6 @@ import cuid from 'cuid';
 
 export function getMixes(req, res) {
   Mix.find({}, function (err, mixes) {
-    console.log(mixes);
     if (err) {
       res.status(500).send();
     }

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { push } from "react-router-redux";
+import { withRouter } from 'react-router';
 
 class RecipeEdit extends Component {
   // constructor
@@ -24,7 +26,7 @@ class RecipeEdit extends Component {
         recipe: this.state.recipe
       }
     });
-    console.log(this.state);
+    this.props.history.push('/');
   }
 
 
@@ -60,4 +62,5 @@ class RecipeEdit extends Component {
   }
 }
 
-export default connect()(RecipeEdit);
+export default withRouter(connect()(RecipeEdit));
+//export default withRouter()(RecipeEdit);

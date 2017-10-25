@@ -60954,17 +60954,13 @@ function mixesFetchList(action) {
 
         case 2:
           mixes = _context.sent;
-
-          console.log("form fetch", mixes);
-
-          // save the users in state
-          _context.next = 6;
+          _context.next = 5;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 6:
+        case 5:
         case "end":
           return _context.stop();
       }
@@ -60982,18 +60978,14 @@ function mixesAddEdit(action) {
           return (0, _effects.call)(_mixes2.default.addEdit, action.mix);
 
         case 2:
-          //return action.callbackError("Some error");   // show an error when the API fails
-          console.log("action", action);
-
-          //update the state by adding/editing the mix
-          _context2.next = 5;
+          _context2.next = 4;
           return (0, _effects.put)({
             //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
             type: 'MIXES_ADD_SAVE',
             mix: action.mix
           });
 
-        case 5:
+        case 4:
         case "end":
           return _context2.stop();
       }
@@ -61023,28 +61015,7 @@ var ApiUsers = function () {
   }
 
   _createClass(ApiUsers, null, [{
-    key: "getList",
-
-
-    // // get a list of users
-    //   static getList() {
-    //     return new Promise(resolve => {
-    //       setTimeout(() => {
-    //         // build some dummy users list
-    //         let mixes = [];
-    //         for (let x = 1; x <= 28; x++) {
-    //           mixes.push({
-    //             id: x,
-    //             title: 'title ' + x,
-    //             author: 'author ' + x,
-    //             recipe: 'recipe ' + x,
-    //           });
-    //         }
-    //         resolve(mixes);
-    //       }, 1000);
-    //     });
-    //   }
-    // }
+    key: 'getList',
 
 
     // get a list of mixes
@@ -61052,13 +61023,10 @@ var ApiUsers = function () {
       var that = this;
       var url = 'api/mixes';
 
-      console.log("update state");
-
       return fetch(url).then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        console.log("in fetch", response);
         return response.json();
       });
     }
@@ -61066,7 +61034,7 @@ var ApiUsers = function () {
     // save new mix/ edited mix
 
   }, {
-    key: "addEdit",
+    key: 'addEdit',
     value: function addEdit() {
 
       var mix = arguments[0];
@@ -61085,7 +61053,6 @@ var ApiUsers = function () {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        console.log("in fetch", response);
         return response.json();
       });
     }
@@ -65457,6 +65424,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(54);
 
+var _reactRouterRedux = __webpack_require__(182);
+
+var _reactRouter = __webpack_require__(281);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65496,7 +65467,7 @@ var RecipeEdit = function (_Component) {
           recipe: this.state.recipe
         }
       });
-      console.log(this.state);
+      this.props.history.push('/');
     }
   }, {
     key: 'render',
@@ -65561,7 +65532,8 @@ var RecipeEdit = function (_Component) {
   return RecipeEdit;
 }(_react.Component);
 
-exports.default = (0, _reactRedux.connect)()(RecipeEdit);
+exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)()(RecipeEdit));
+//export default withRouter()(RecipeEdit);
 
 /***/ })
 /******/ ]);

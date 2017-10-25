@@ -5,7 +5,6 @@ import ApiMixes from "../api/mixes";
 export function* mixesFetchList(action) {
   // call the api to get the mix list
   const mixes = yield call(ApiMixes.getList);
-  console.log("form fetch", mixes);
 
   // save the users in state
   yield put({
@@ -19,7 +18,6 @@ export function* mixesAddEdit(action) {
   // call the api to add/edit the mix
   yield call(ApiMixes.addEdit, action.mix);
   //return action.callbackError("Some error");   // show an error when the API fails
-  console.log("action", action);
 
   //update the state by adding/editing the mix
   yield put({
