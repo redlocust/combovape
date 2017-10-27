@@ -18,11 +18,14 @@ class MixList extends Component {
       mixList = dataArray.map((mix, index) => {
         return <div className="mix-item" key={index}>
           <div className="mix-item__first-row row">
-            <div className="col-lg-6">
+            <div className="col-lg-4">
               <span className="mix-item__name">{mix.title}</span>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-2">
               <span className="mix-item__author">{mix.author}</span>
+            </div>
+            <div className="col-lg-6">
+              <span className="mix-item__author">{mix.recipe}</span>
             </div>
           </div>
         </div>

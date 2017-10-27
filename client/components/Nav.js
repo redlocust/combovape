@@ -13,7 +13,7 @@ export default class Nav extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand navbar__brand-color" href="#">ComboVape</a>
+              <Link to="/" className="navbar-brand navbar__brand-color">ComboVape</Link>
             </div>
 
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
