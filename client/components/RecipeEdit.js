@@ -63,4 +63,3 @@ class RecipeEdit extends Component {
 }
 
 export default withRouter(connect()(RecipeEdit));
-//export default withRouter()(RecipeEdit);

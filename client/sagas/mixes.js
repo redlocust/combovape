@@ -13,6 +13,18 @@ export function* mixesFetchList(action) {
   });
 }
 
+// seed 10 mixes
+export function* mixesSeedList(action) {
+  // call the api to add/edit the mix
+  const mixes = yield call(ApiMixes.seedList);
+
+  yield put({
+    type: 'MIXES_LIST_SAVE',
+    mixes: mixes,
+  });
+}
+
+
 // add/edit a mix
 export function* mixesAddEdit(action) {
   // call the api to add/edit the mix

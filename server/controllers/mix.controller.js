@@ -50,6 +50,29 @@ export function addMix(req, res) {
     .catch((err) => res.json(err))
 }
 
+
+export function seedMix(req, res) {
+
+  let mix = {
+    author: 'author recipe',
+    title: 'recipe title',
+    recipe: 'recipe text'
+  };
+
+  let mixArray = [];
+
+  for (let i = 0; i < 10; i++) {
+    mixArray.push(mix);
+  }
+  
+  Mix.insertMany(mixArray)
+    .then((mixes) => {
+      res.json({post: mixes})
+    })
+    .catch((err) => res.json(err))
+}
+
+
 export function updateMix(req, res) {
   res.send(
     {

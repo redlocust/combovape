@@ -18,30 +18,21 @@ class Main extends Component {
 
   onSeedClick(e) {
     e.preventDefault();
-    let stockId = "test123";
-    var that = this;
-    fetch("/api/mixes/",
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({code: stockId})
-      })
-      .then(function (res) {
-        console.log('completed');
-        that.updateStateWithData();
-      })
-      .catch(function (res) {
-        console.log(res)
-      });
+    console.log('seed click');
+    this.props.dispatch({
+      type: 'MIXES_SEED_LIST',
+      mix: {
+        author: '',
+        title: '',
+        recipe: ''
+      }
+    });
   }
 
   onDeleteClick(e) {
     e.preventDefault();
     let stockId = "test123";
-    var that = this;
+    let that = this;
     fetch("/api/mixes/",
       {
         headers: {
@@ -52,7 +43,6 @@ class Main extends Component {
         body: JSON.stringify({code: stockId})
       })
       .then(function (res) {
-        console.log('completed');
         that.updateStateWithData();
       })
       .catch(function (res) {
@@ -75,7 +65,6 @@ class Main extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
-              {console.log("mixes: " + mixes)}
               <MixList dataArray={mixes}/>
               <button type="submit" onClick={this.onSeedClick}>Seed</button>
               <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
@@ -89,7 +78,6 @@ class Main extends Component {
 
 // export the connected class
 function mapStateToProps(state) {
-  console.log("state ", state);
   return {
     mixes: state.mixes
   };

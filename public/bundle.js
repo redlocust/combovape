@@ -60908,7 +60908,7 @@ function sagas() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit)];
+          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_SEED_LIST', _mixes.mixesSeedList)];
 
         case 2:
         case "end":
@@ -60929,6 +60929,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.mixesFetchList = mixesFetchList;
+exports.mixesSeedList = mixesSeedList;
 exports.mixesAddEdit = mixesAddEdit;
 
 var _effects = __webpack_require__(203);
@@ -60940,7 +60941,8 @@ var _mixes2 = _interopRequireDefault(_mixes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(mixesFetchList),
-    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
+    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(mixesSeedList),
+    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
 
 // fetch the user's list
 function mixesFetchList(action) {
@@ -60968,17 +60970,43 @@ function mixesFetchList(action) {
   }, _marked, this);
 }
 
-// add/edit a mix
-function mixesAddEdit(action) {
-  return regeneratorRuntime.wrap(function mixesAddEdit$(_context2) {
+// seed 10 mixes
+function mixesSeedList(action) {
+  var mixes;
+  return regeneratorRuntime.wrap(function mixesSeedList$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
+          return (0, _effects.call)(_mixes2.default.seedList);
+
+        case 2:
+          mixes = _context2.sent;
+          _context2.next = 5;
+          return (0, _effects.put)({
+            type: 'MIXES_LIST_SAVE',
+            mixes: mixes
+          });
+
+        case 5:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2, this);
+}
+
+// add/edit a mix
+function mixesAddEdit(action) {
+  return regeneratorRuntime.wrap(function mixesAddEdit$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
           return (0, _effects.call)(_mixes2.default.addEdit, action.mix);
 
         case 2:
-          _context2.next = 4;
+          _context3.next = 4;
           return (0, _effects.put)({
             //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
             type: 'MIXES_ADD_SAVE',
@@ -60987,10 +61015,10 @@ function mixesAddEdit(action) {
 
         case 4:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
     }
-  }, _marked2, this);
+  }, _marked3, this);
 }
 
 /***/ }),
@@ -61009,18 +61037,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // API Users static class
-var ApiUsers = function () {
-  function ApiUsers() {
-    _classCallCheck(this, ApiUsers);
+var ApiMixes = function () {
+  function ApiMixes() {
+    _classCallCheck(this, ApiMixes);
   }
 
-  _createClass(ApiUsers, null, [{
+  _createClass(ApiMixes, null, [{
     key: 'getList',
 
 
     // get a list of mixes
     value: function getList() {
-      var that = this;
       var url = 'api/mixes';
 
       return fetch(url).then(function (response) {
@@ -61038,9 +61065,33 @@ var ApiUsers = function () {
     value: function addEdit() {
 
       var mix = arguments[0];
-
-      var that = this;
       var url = 'api/mixes';
+
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(mix)
+      }).then(function (response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        return response.json();
+      });
+    }
+
+    // seed 10 mixes
+
+  }, {
+    key: 'seedList',
+    value: function seedList() {
+
+      console.log('seed');
+
+      var mix = arguments[0];
+      var url = 'api/mixes-seed';
 
       return fetch(url, {
         method: 'POST',
@@ -61058,10 +61109,10 @@ var ApiUsers = function () {
     }
   }]);
 
-  return ApiUsers;
+  return ApiMixes;
 }();
 
-exports.default = ApiUsers;
+exports.default = ApiMixes;
 
 /***/ }),
 /* 838 */
@@ -61801,20 +61852,14 @@ var Main = function (_Component) {
     key: 'onSeedClick',
     value: function onSeedClick(e) {
       e.preventDefault();
-      var stockId = "test123";
-      var that = this;
-      fetch("/api/mixes/", {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({ code: stockId })
-      }).then(function (res) {
-        console.log('completed');
-        that.updateStateWithData();
-      }).catch(function (res) {
-        console.log(res);
+      console.log('seed click');
+      this.props.dispatch({
+        type: 'MIXES_SEED_LIST',
+        mix: {
+          author: '',
+          title: '',
+          recipe: ''
+        }
       });
     }
   }, {
@@ -61831,7 +61876,6 @@ var Main = function (_Component) {
         method: "DELETE",
         body: JSON.stringify({ code: stockId })
       }).then(function (res) {
-        console.log('completed');
         that.updateStateWithData();
       }).catch(function (res) {
         console.log(res);
@@ -61872,7 +61916,6 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              console.log("mixes: " + mixes),
               _react2.default.createElement(_MixList2.default, { dataArray: mixes }),
               _react2.default.createElement(
                 'button',
@@ -61898,7 +61941,6 @@ var Main = function (_Component) {
 
 
 function mapStateToProps(state) {
-  console.log("state ", state);
   return {
     mixes: state.mixes
   };
@@ -61961,7 +62003,7 @@ var MixList = function (_Component) {
               { className: "mix-item__first-row row" },
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-4" },
+                { className: "col-lg-5" },
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__name" },
@@ -61970,7 +62012,7 @@ var MixList = function (_Component) {
               ),
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-2" },
+                { className: "col-lg-5" },
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__author" },
@@ -61979,7 +62021,22 @@ var MixList = function (_Component) {
               ),
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-6" },
+                { className: "col-lg-2" },
+                _react2.default.createElement(
+                  "button",
+                  { onClick: function onClick() {
+                      mixDelete(mix);
+                    } },
+                  "Delete"
+                )
+              )
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "mix-item__second-row row" },
+              _react2.default.createElement(
+                "div",
+                { className: "col-lg-12" },
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__author" },
@@ -62369,7 +62426,6 @@ var RecipeEdit = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)()(RecipeEdit));
-//export default withRouter()(RecipeEdit);
 
 /***/ }),
 /* 854 */
