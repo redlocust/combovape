@@ -18,36 +18,17 @@ class Main extends Component {
 
   onSeedClick(e) {
     e.preventDefault();
-    console.log('seed click');
     this.props.dispatch({
-      type: 'MIXES_SEED_LIST',
-      mix: {
-        author: '',
-        title: '',
-        recipe: ''
-      }
+      type: 'MIXES_SEED_LIST'
     });
   }
 
   onDeleteClick(e) {
     e.preventDefault();
-    let stockId = "test123";
-    let that = this;
-    fetch("/api/mixes/",
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "DELETE",
-        body: JSON.stringify({code: stockId})
-      })
-      .then(function (res) {
-        that.updateStateWithData();
-      })
-      .catch(function (res) {
-        console.log(res)
-      });
+    this.props.dispatch({
+      type: 'MIXES_DELETE_LIST'
+    });
+
   }
 
   render() {
@@ -59,6 +40,8 @@ class Main extends Component {
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
               <h2>Vapelist app</h2>
+              <button type="submit" onClick={this.onSeedClick}>Seed</button>
+              <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
             </div>
           </div>
         </div>
@@ -66,8 +49,6 @@ class Main extends Component {
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
               <MixList dataArray={mixes}/>
-              <button type="submit" onClick={this.onSeedClick}>Seed</button>
-              <button type="submit" onClick={this.onDeleteClick}>Delete All</button>
             </div>
           </div>
         </div>

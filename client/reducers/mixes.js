@@ -2,6 +2,7 @@
 export default function mixes(state = {}, action) {
   switch (action.type) {
     case 'MIXES_LIST_SAVE':
+      console.log("redux list save", action.mixes);
       return action.mixes;
 
     case 'MIXES_ADD_SAVE':

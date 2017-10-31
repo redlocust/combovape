@@ -60597,6 +60597,7 @@ function mixes() {
 
   switch (action.type) {
     case 'MIXES_LIST_SAVE':
+      console.log("redux list save", action.mixes);
       return action.mixes;
 
     case 'MIXES_ADD_SAVE':
@@ -60908,7 +60909,7 @@ function sagas() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_SEED_LIST', _mixes.mixesSeedList)];
+          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_SEED_LIST', _mixes.mixesSeedList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_DELETE_LIST', _mixes.mixesDeleteList)];
 
         case 2:
         case "end":
@@ -60930,6 +60931,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.mixesFetchList = mixesFetchList;
 exports.mixesSeedList = mixesSeedList;
+exports.mixesDeleteList = mixesDeleteList;
 exports.mixesAddEdit = mixesAddEdit;
 
 var _effects = __webpack_require__(203);
@@ -60942,7 +60944,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(mixesFetchList),
     _marked2 = /*#__PURE__*/regeneratorRuntime.mark(mixesSeedList),
-    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
+    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(mixesDeleteList),
+    _marked4 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
 
 // fetch the user's list
 function mixesFetchList(action) {
@@ -60956,13 +60959,16 @@ function mixesFetchList(action) {
 
         case 2:
           mixes = _context.sent;
-          _context.next = 5;
+
+          console.log("Fetch mixes ", mixes);
+          // save the users in state
+          _context.next = 6;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 5:
+        case 6:
         case "end":
           return _context.stop();
       }
@@ -60981,14 +60987,18 @@ function mixesSeedList(action) {
           return (0, _effects.call)(_mixes2.default.seedList);
 
         case 2:
+          _context2.next = 4;
+          return (0, _effects.call)(_mixes2.default.getList);
+
+        case 4:
           mixes = _context2.sent;
-          _context2.next = 5;
+          _context2.next = 7;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 5:
+        case 7:
         case "end":
           return _context2.stop();
       }
@@ -60996,17 +61006,47 @@ function mixesSeedList(action) {
   }, _marked2, this);
 }
 
-// add/edit a mix
-function mixesAddEdit(action) {
-  return regeneratorRuntime.wrap(function mixesAddEdit$(_context3) {
+// seed 10 mixes
+function mixesDeleteList(action) {
+  var mixes;
+  return regeneratorRuntime.wrap(function mixesDeleteList$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.next = 2;
-          return (0, _effects.call)(_mixes2.default.addEdit, action.mix);
+          return (0, _effects.call)(_mixes2.default.deleteList);
 
         case 2:
           _context3.next = 4;
+          return (0, _effects.call)(_mixes2.default.getList);
+
+        case 4:
+          mixes = _context3.sent;
+          _context3.next = 7;
+          return (0, _effects.put)({
+            type: 'MIXES_LIST_SAVE',
+            mixes: mixes
+          });
+
+        case 7:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, _marked3, this);
+}
+
+// add/edit a mix
+function mixesAddEdit(action) {
+  return regeneratorRuntime.wrap(function mixesAddEdit$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return (0, _effects.call)(_mixes2.default.addEdit, action.mix);
+
+        case 2:
+          _context4.next = 4;
           return (0, _effects.put)({
             //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
             type: 'MIXES_ADD_SAVE',
@@ -61015,10 +61055,10 @@ function mixesAddEdit(action) {
 
         case 4:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
     }
-  }, _marked3, this);
+  }, _marked4, this);
 }
 
 /***/ }),
@@ -61082,13 +61122,37 @@ var ApiMixes = function () {
       });
     }
 
+    // delete all mixes
+
+  }, {
+    key: 'deleteList',
+    value: function deleteList() {
+
+      console.log('delete');
+
+      var mix = arguments[0];
+      var url = 'api/mixes';
+
+      return fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(mix)
+      }).then(function (response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        return response.json();
+      });
+    }
+
     // seed 10 mixes
 
   }, {
     key: 'seedList',
     value: function seedList() {
-
-      console.log('seed');
 
       var mix = arguments[0];
       var url = 'api/mixes-seed';
@@ -61852,33 +61916,16 @@ var Main = function (_Component) {
     key: 'onSeedClick',
     value: function onSeedClick(e) {
       e.preventDefault();
-      console.log('seed click');
       this.props.dispatch({
-        type: 'MIXES_SEED_LIST',
-        mix: {
-          author: '',
-          title: '',
-          recipe: ''
-        }
+        type: 'MIXES_SEED_LIST'
       });
     }
   }, {
     key: 'onDeleteClick',
     value: function onDeleteClick(e) {
       e.preventDefault();
-      var stockId = "test123";
-      var that = this;
-      fetch("/api/mixes/", {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "DELETE",
-        body: JSON.stringify({ code: stockId })
-      }).then(function (res) {
-        that.updateStateWithData();
-      }).catch(function (res) {
-        console.log(res);
+      this.props.dispatch({
+        type: 'MIXES_DELETE_LIST'
       });
     }
   }, {
@@ -61903,6 +61950,16 @@ var Main = function (_Component) {
                 'h2',
                 null,
                 'Vapelist app'
+              ),
+              _react2.default.createElement(
+                'button',
+                { type: 'submit', onClick: this.onSeedClick },
+                'Seed'
+              ),
+              _react2.default.createElement(
+                'button',
+                { type: 'submit', onClick: this.onDeleteClick },
+                'Delete All'
               )
             )
           )
@@ -61916,17 +61973,7 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              _react2.default.createElement(_MixList2.default, { dataArray: mixes }),
-              _react2.default.createElement(
-                'button',
-                { type: 'submit', onClick: this.onSeedClick },
-                'Seed'
-              ),
-              _react2.default.createElement(
-                'button',
-                { type: 'submit', onClick: this.onDeleteClick },
-                'Delete All'
-              )
+              _react2.default.createElement(_MixList2.default, { dataArray: mixes })
             )
           )
         )
