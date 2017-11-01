@@ -4,7 +4,7 @@ let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: [
-    './client/index.jsx'
+    './client/index.js'
   ],
 
   output: {
@@ -14,7 +14,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      Main: path.resolve(__dirname, './client/components/Main.jsx'),
+      Main: path.resolve(__dirname, './client/components/Main.js'),
     }
   },
 

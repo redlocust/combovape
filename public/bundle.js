@@ -60909,7 +60909,7 @@ function sagas() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_SEED_LIST', _mixes.mixesSeedList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_DELETE_LIST', _mixes.mixesDeleteList)];
+          return [(0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_FETCH_LIST', _mixes.mixesFetchList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_ADD_EDIT', _mixes.mixesAddEdit), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_SEED_LIST', _mixes.mixesSeedList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_DELETE_LIST', _mixes.mixesDeleteList), (0, _effects.fork)(_reduxSaga.takeLatest, 'MIXES_DELETE', _mixes.mixesDelete)];
 
         case 2:
         case "end":
@@ -60933,6 +60933,7 @@ exports.mixesFetchList = mixesFetchList;
 exports.mixesSeedList = mixesSeedList;
 exports.mixesDeleteList = mixesDeleteList;
 exports.mixesAddEdit = mixesAddEdit;
+exports.mixesDelete = mixesDelete;
 
 var _effects = __webpack_require__(203);
 
@@ -60945,7 +60946,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(mixesFetchList),
     _marked2 = /*#__PURE__*/regeneratorRuntime.mark(mixesSeedList),
     _marked3 = /*#__PURE__*/regeneratorRuntime.mark(mixesDeleteList),
-    _marked4 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit);
+    _marked4 = /*#__PURE__*/regeneratorRuntime.mark(mixesAddEdit),
+    _marked5 = /*#__PURE__*/regeneratorRuntime.mark(mixesDelete);
 
 // fetch the user's list
 function mixesFetchList(action) {
@@ -61061,6 +61063,40 @@ function mixesAddEdit(action) {
   }, _marked4, this);
 }
 
+function mixesDelete(action) {
+  var response, mixes;
+  return regeneratorRuntime.wrap(function mixesDelete$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          console.log("action del", action.mix);
+          _context5.next = 3;
+          return (0, _effects.call)(_mixes2.default.deleteMix, action.mix);
+
+        case 3:
+          response = _context5.sent;
+
+          console.log(response);
+
+          _context5.next = 7;
+          return (0, _effects.call)(_mixes2.default.getList);
+
+        case 7:
+          mixes = _context5.sent;
+          _context5.next = 10;
+          return (0, _effects.put)({
+            type: 'MIXES_LIST_SAVE',
+            mixes: mixes
+          });
+
+        case 10:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, _marked5, this);
+}
+
 /***/ }),
 /* 837 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -61122,19 +61158,17 @@ var ApiMixes = function () {
       });
     }
 
-    // delete all mixes
+    //delete recipe
 
   }, {
-    key: 'deleteList',
-    value: function deleteList() {
-
-      console.log('delete');
+    key: 'deleteMix',
+    value: function deleteMix() {
 
       var mix = arguments[0];
-      var url = 'api/mixes';
-
+      var url = 'api/mixes/' + mix._id;
+      console.log(url);
       return fetch(url, {
-        method: 'DELETE',
+        method: 'delete',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
@@ -61148,22 +61182,38 @@ var ApiMixes = function () {
       });
     }
 
+    // delete all mixes
+
+  }, {
+    key: 'deleteList',
+    value: function deleteList() {
+      var url = 'api/mixes';
+      return fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }).then(function (response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        return response.json();
+      });
+    }
+
     // seed 10 mixes
 
   }, {
     key: 'seedList',
     value: function seedList() {
-
-      var mix = arguments[0];
       var url = 'api/mixes-seed';
-
       return fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(mix)
+        }
       }).then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -61899,7 +61949,8 @@ var Main = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.onSeedClick = _this.onSeedClick.bind(_this);
-    _this.onDeleteClick = _this.onDeleteClick.bind(_this);
+    _this.onDeleteAllClick = _this.onDeleteAllClick.bind(_this);
+    _this.onDeleteMix = _this.onDeleteMix.bind(_this);
     return _this;
   }
 
@@ -61921,11 +61972,19 @@ var Main = function (_Component) {
       });
     }
   }, {
-    key: 'onDeleteClick',
-    value: function onDeleteClick(e) {
+    key: 'onDeleteAllClick',
+    value: function onDeleteAllClick(e) {
       e.preventDefault();
       this.props.dispatch({
         type: 'MIXES_DELETE_LIST'
+      });
+    }
+  }, {
+    key: 'onDeleteMix',
+    value: function onDeleteMix(mix) {
+      this.props.dispatch({
+        type: 'MIXES_DELETE',
+        mix: mix
       });
     }
   }, {
@@ -61958,7 +62017,7 @@ var Main = function (_Component) {
               ),
               _react2.default.createElement(
                 'button',
-                { type: 'submit', onClick: this.onDeleteClick },
+                { type: 'submit', onClick: this.onDeleteAllClick },
                 'Delete All'
               )
             )
@@ -61973,7 +62032,7 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              _react2.default.createElement(_MixList2.default, { dataArray: mixes })
+              _react2.default.createElement(_MixList2.default, { dataArray: mixes, onDeleteMixClick: this.onDeleteMix })
             )
           )
         )
@@ -62031,6 +62090,7 @@ var MixList = function (_Component) {
   _createClass(MixList, [{
     key: "render",
     value: function render() {
+      var _this2 = this;
 
       console.log("dataArray", this.props.dataArray);
 
@@ -62050,6 +62110,15 @@ var MixList = function (_Component) {
               { className: "mix-item__first-row row" },
               _react2.default.createElement(
                 "div",
+                { className: "col-lg-2" },
+                _react2.default.createElement(
+                  "span",
+                  { className: "mix-item__name" },
+                  index
+                )
+              ),
+              _react2.default.createElement(
+                "div",
                 { className: "col-lg-5" },
                 _react2.default.createElement(
                   "span",
@@ -62059,7 +62128,7 @@ var MixList = function (_Component) {
               ),
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-5" },
+                { className: "col-lg-4" },
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__author" },
@@ -62068,11 +62137,11 @@ var MixList = function (_Component) {
               ),
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-2" },
+                { className: "col-lg-1" },
                 _react2.default.createElement(
                   "button",
                   { onClick: function onClick() {
-                      mixDelete(mix);
+                      _this2.props.onDeleteMixClick(mix);
                     } },
                   "Delete"
                 )

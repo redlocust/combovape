@@ -18,14 +18,17 @@ class MixList extends Component {
       mixList = dataArray.map((mix, index) => {
         return <div className="mix-item" key={index}>
           <div className="mix-item__first-row row">
+            <div className="col-lg-2">
+              <span className="mix-item__name">{index}</span>
+            </div>
             <div className="col-lg-5">
               <span className="mix-item__name">{mix.title}</span>
             </div>
-            <div className="col-lg-5">
+            <div className="col-lg-4">
               <span className="mix-item__author">{mix.author}</span>
             </div>
-            <div className="col-lg-2">
-                <button onClick={() => {mixDelete(mix)}}>Delete</button>
+            <div className="col-lg-1">
+                <button onClick={() => {this.props.onDeleteMixClick(mix)}}>Delete</button>
             </div>
           </div>
           <div className="mix-item__second-row row">

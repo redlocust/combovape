@@ -49,3 +49,16 @@ export function* mixesAddEdit(action) {
     mix: action.mix,
   });
 }
+
+export function* mixesDelete(action) {
+  console.log("action del", action.mix);
+  const response = yield call(ApiMixes.deleteMix, action.mix);
+  console.log(response);
+
+  const mixes = yield call(ApiMixes.getList);
+  yield put({
+    type: 'MIXES_LIST_SAVE',
+    mixes: mixes
+  });
+
+}

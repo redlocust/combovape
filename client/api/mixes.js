@@ -38,16 +38,14 @@ export default class ApiMixes {
       });
   }
 
-  // delete all mixes
-  static deleteList() {
-
-    console.log('delete');
+  //delete recipe
+  static deleteMix() {
 
     let mix = arguments[0];
-    let url = 'api/mixes';
-
+    let url = `api/mixes/${mix._id}`;
+    console.log(url);
     return fetch(url, {
-        method: 'DELETE',
+        method: 'delete',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
@@ -63,19 +61,34 @@ export default class ApiMixes {
       });
   }
 
+  // delete all mixes
+  static deleteList() {
+    let url = 'api/mixes';
+    return fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }
+    )
+      .then(function (response) {
+        if (response.status >= 400) {
+          throw new Error("Bad response from server");
+        }
+        return response.json();
+      });
+  }
+
   // seed 10 mixes
   static seedList() {
-
-    let mix = arguments[0];
     let url = 'api/mixes-seed';
-
     return fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(mix)
+        }
       }
     )
       .then(function (response) {
