@@ -40,10 +40,8 @@ export default class ApiMixes {
 
   //delete recipe
   static deleteMix() {
-
     let mix = arguments[0];
     let url = `api/mixes/${mix._id}`;
-    console.log(url);
     return fetch(url, {
         method: 'delete',
         headers: {

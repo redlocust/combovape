@@ -5,7 +5,6 @@ import ApiMixes from "../api/mixes";
 export function* mixesFetchList(action) {
   // call the api to get the mix list
   const mixes = yield call(ApiMixes.getList);
-  console.log("Fetch mixes ", mixes);
   // save the users in state
   yield put({
     type: 'MIXES_LIST_SAVE',
@@ -51,10 +50,7 @@ export function* mixesAddEdit(action) {
 }
 
 export function* mixesDelete(action) {
-  console.log("action del", action.mix);
   const response = yield call(ApiMixes.deleteMix, action.mix);
-  console.log(response);
-
   const mixes = yield call(ApiMixes.getList);
   yield put({
     type: 'MIXES_LIST_SAVE',

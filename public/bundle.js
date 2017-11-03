@@ -60961,16 +60961,13 @@ function mixesFetchList(action) {
 
         case 2:
           mixes = _context.sent;
-
-          console.log("Fetch mixes ", mixes);
-          // save the users in state
-          _context.next = 6;
+          _context.next = 5;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 6:
+        case 5:
         case "end":
           return _context.stop();
       }
@@ -61069,27 +61066,23 @@ function mixesDelete(action) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
-          console.log("action del", action.mix);
-          _context5.next = 3;
+          _context5.next = 2;
           return (0, _effects.call)(_mixes2.default.deleteMix, action.mix);
 
-        case 3:
+        case 2:
           response = _context5.sent;
-
-          console.log(response);
-
-          _context5.next = 7;
+          _context5.next = 5;
           return (0, _effects.call)(_mixes2.default.getList);
 
-        case 7:
+        case 5:
           mixes = _context5.sent;
-          _context5.next = 10;
+          _context5.next = 8;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 10:
+        case 8:
         case "end":
           return _context5.stop();
       }
@@ -61163,10 +61156,8 @@ var ApiMixes = function () {
   }, {
     key: 'deleteMix',
     value: function deleteMix() {
-
       var mix = arguments[0];
       var url = 'api/mixes/' + mix._id;
-      console.log(url);
       return fetch(url, {
         method: 'delete',
         headers: {
@@ -62091,8 +62082,6 @@ var MixList = function (_Component) {
     key: "render",
     value: function render() {
       var _this2 = this;
-
-      console.log("dataArray", this.props.dataArray);
 
       var dataArray = this.props.dataArray;
 

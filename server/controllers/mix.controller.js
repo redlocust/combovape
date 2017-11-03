@@ -20,13 +20,7 @@ export function getMix(req, res) {
 
 
 export function deleteMix(req, res) {
-  // res.send(
-  //   {
-  //     message: `Delete : ${req.params.mixcode}`
-  //   }
-  // );
-
-  Mix.remove({_id: req.params.mixcode})
+    Mix.remove({_id: req.params.mixcode})
     .then((mixes) => {
       res.json({post: mixes})
     })
@@ -64,9 +58,9 @@ export function seedMix(req, res) {
 
   for (let i = 0; i < 10; i++) {
     let mix = {
-      author: 'author recipe',
-      title: 'recipe title',
-      recipe: 'recipe text'
+      author: `${i} author`,
+      title: `${i} title`,
+      recipe: `${i} long-long recipe text`
     };
     mixArray.push(mix);
   }

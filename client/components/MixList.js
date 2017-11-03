@@ -6,9 +6,6 @@ class MixList extends Component {
   }
 
   render() {
-
-    console.log("dataArray", this.props.dataArray);
-
     let {dataArray} = this.props;
 
     let isEmpty = Object.keys(dataArray).length === 0;
