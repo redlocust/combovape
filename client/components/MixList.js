@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from "react-router-dom";
 
 class MixList extends Component {
   constructor(props) {
@@ -13,19 +14,25 @@ class MixList extends Component {
 
     if (!isEmpty) {
       mixList = dataArray.map((mix, index) => {
+        console.log("mix._id", mix._id);
         return <div className="mix-item" key={index}>
           <div className="mix-item__first-row row">
             <div className="col-lg-2">
               <span className="mix-item__name">{index}</span>
             </div>
-            <div className="col-lg-5">
+            <div className="col-lg-4">
               <span className="mix-item__name">{mix.title}</span>
             </div>
             <div className="col-lg-4">
               <span className="mix-item__author">{mix.author}</span>
             </div>
             <div className="col-lg-1">
-                <button onClick={() => {this.props.onDeleteMixClick(mix)}}>Delete</button>
+              <Link to={'user-edit/' + mix._id}>
+                <button>Edit</button>
+              </Link>
+            </div>
+            <div className="col-lg-1">
+              <button onClick={() => {this.props.onDeleteMixClick(mix)}}>Delete</button>
             </div>
           </div>
           <div className="mix-item__second-row row">

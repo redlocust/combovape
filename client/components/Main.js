@@ -9,6 +9,7 @@ class Main extends Component {
     this.onSeedClick = this.onSeedClick.bind(this);
     this.onDeleteAllClick = this.onDeleteAllClick.bind(this);
     this.onDeleteMix = this.onDeleteMix.bind(this);
+    this.onEditMix = this.onEditMix.bind(this);
   }
 
   // pre-render logic
@@ -39,6 +40,13 @@ class Main extends Component {
     });
   }
 
+  onEditMix(mix) {
+    this.props.dispatch({
+      type: 'MIXES_EDIT',
+      mix: mix
+    });
+  }
+
   render() {
     const {mixes} = this.props;
 
@@ -56,7 +64,7 @@ class Main extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
-              <MixList dataArray={mixes} onDeleteMixClick={this.onDeleteMix}/>
+              <MixList dataArray={mixes} onDeleteMixClick={this.onDeleteMix} onEditMixClick={this.onEditMix}/>
             </div>
           </div>
         </div>

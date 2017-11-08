@@ -61942,6 +61942,7 @@ var Main = function (_Component) {
     _this.onSeedClick = _this.onSeedClick.bind(_this);
     _this.onDeleteAllClick = _this.onDeleteAllClick.bind(_this);
     _this.onDeleteMix = _this.onDeleteMix.bind(_this);
+    _this.onEditMix = _this.onEditMix.bind(_this);
     return _this;
   }
 
@@ -61975,6 +61976,14 @@ var Main = function (_Component) {
     value: function onDeleteMix(mix) {
       this.props.dispatch({
         type: 'MIXES_DELETE',
+        mix: mix
+      });
+    }
+  }, {
+    key: 'onEditMix',
+    value: function onEditMix(mix) {
+      this.props.dispatch({
+        type: 'MIXES_EDIT',
         mix: mix
       });
     }
@@ -62023,7 +62032,7 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              _react2.default.createElement(_MixList2.default, { dataArray: mixes, onDeleteMixClick: this.onDeleteMix })
+              _react2.default.createElement(_MixList2.default, { dataArray: mixes, onDeleteMixClick: this.onDeleteMix, onEditMixClick: this.onEditMix })
             )
           )
         )
@@ -62061,6 +62070,8 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(328);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -62091,6 +62102,7 @@ var MixList = function (_Component) {
 
       if (!isEmpty) {
         mixList = dataArray.map(function (mix, index) {
+          console.log("mix._id", mix._id);
           return _react2.default.createElement(
             "div",
             { className: "mix-item", key: index },
@@ -62108,7 +62120,7 @@ var MixList = function (_Component) {
               ),
               _react2.default.createElement(
                 "div",
-                { className: "col-lg-5" },
+                { className: "col-lg-4" },
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__name" },
@@ -62122,6 +62134,19 @@ var MixList = function (_Component) {
                   "span",
                   { className: "mix-item__author" },
                   mix.author
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "col-lg-1" },
+                _react2.default.createElement(
+                  _reactRouterDom.Link,
+                  { to: 'user-edit/' + mix._id },
+                  _react2.default.createElement(
+                    "button",
+                    null,
+                    "Edit"
+                  )
                 )
               ),
               _react2.default.createElement(
