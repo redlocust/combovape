@@ -61136,6 +61136,8 @@ var ApiMixes = function () {
       var mix = arguments[0];
       var url = 'api/mixes';
 
+      console.log("mix addEdit", mix);
+
       return fetch(url, {
         method: 'POST',
         headers: {
@@ -61270,8 +61272,9 @@ var router = _react2.default.createElement(
     _react2.default.createElement(
       _reactRouterDom.Switch,
       null,
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _Main2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: "/recipe-edit", component: _RecipeEdit2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/", exact: true, component: _Main2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/recipe-edit", exact: true, component: _RecipeEdit2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: "/recipe-edit/:mixId", component: _RecipeEdit2.default })
     )
   )
 );
@@ -62141,7 +62144,7 @@ var MixList = function (_Component) {
                 { className: "col-lg-1" },
                 _react2.default.createElement(
                   _reactRouterDom.Link,
-                  { to: 'user-edit/' + mix._id },
+                  { to: 'recipe-edit/' + mix._id },
                   _react2.default.createElement(
                     "button",
                     null,
@@ -62481,10 +62484,13 @@ var RecipeEdit = function (_Component) {
   _createClass(RecipeEdit, [{
     key: 'handleSubmit',
     value: function handleSubmit(e) {
+      var mixId = this.props.match.params.mixId;
+
       e.preventDefault();
       this.props.dispatch({
         type: 'MIXES_ADD_EDIT',
         mix: {
+          mixId: mixId || 0,
           author: this.state.author,
           title: this.state.title,
           recipe: this.state.recipe

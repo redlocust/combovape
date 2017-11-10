@@ -21,6 +21,8 @@ export default class ApiMixes {
     let mix = arguments[0];
     let url = 'api/mixes';
 
+    console.log("mix addEdit", mix);
+
     return fetch(url, {
         method: 'POST',
         headers: {

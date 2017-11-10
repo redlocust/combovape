@@ -17,10 +17,12 @@ class RecipeEdit extends Component {
   }
 
   handleSubmit(e) {
+    let { mixId } = this.props.match.params;
     e.preventDefault();
     this.props.dispatch({
       type: 'MIXES_ADD_EDIT',
       mix: {
+        mixId: mixId || 0,
         author: this.state.author,
         title: this.state.title,
         recipe: this.state.recipe

@@ -38,6 +38,8 @@ export function deleteMixes(req, res) {
 
 export function addMix(req, res) {
 
+  console.log("body", req.body );
+
   let mixArray = [{
     author: req.body.author,
     title: req.body.title,

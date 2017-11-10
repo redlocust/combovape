@@ -27,7 +27,7 @@ class MixList extends Component {
               <span className="mix-item__author">{mix.author}</span>
             </div>
             <div className="col-lg-1">
-              <Link to={'user-edit/' + mix._id}>
+              <Link to={'recipe-edit/' + mix._id}>
                 <button>Edit</button>
               </Link>
             </div>

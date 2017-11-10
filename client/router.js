@@ -13,8 +13,9 @@ const router = (
     <div>
       <Nav/>
       <Switch>
-        <Route exact path='/' component={Main}/>
-        <Route path="/recipe-edit" component={RecipeEdit}/>
+        <Route path='/' exact component={Main}/>
+        <Route path='/recipe-edit' exact component={RecipeEdit}/>
+        <Route path='/recipe-edit/:mixId' component={RecipeEdit}/>
       </Switch>
     </div>
   </ConnectedRouter>
