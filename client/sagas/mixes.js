@@ -12,6 +12,17 @@ export function* mixesFetchList(action) {
   });
 }
 
+// fetch the mix
+export function* mixesFetchMix(action) {
+  // call the api to get the single mix
+  const mix = yield call(ApiMixes.getMix);
+  // save the mix in state
+  yield put({
+    type: 'MIXES_MIX_SAVE',
+    mix: mix,
+  });
+}
+
 // seed 10 mixes
 export function* mixesSeedList(action) {
   yield call(ApiMixes.seedList);
@@ -34,10 +45,10 @@ export function* mixesDeleteList(action) {
   });
 }
 
-// add/edit a mix
-export function* mixesAddEdit(action) {
+// add a mix
+export function* mixesAdd(action) {
   // call the api to add/edit the mix
-  yield call(ApiMixes.addEdit, action.mix);
+  yield call(ApiMixes.addMix, action.mix);
   //return action.callbackError("Some error");
   // show an error when the API fails
 
@@ -45,6 +56,20 @@ export function* mixesAddEdit(action) {
   yield put({
     //type: action.mix.id ? 'MIXES_EDIT_SAVE' : 'MIXES_ADD_SAVE',
     type: 'MIXES_ADD_SAVE',
+    mix: action.mix,
+  });
+}
+
+// add a mix
+export function* mixesEdit(action) {
+  // call the api to edit the mix
+  yield call(ApiMixes.editMix, action.mix);
+  //return action.callbackError("Some error");
+  // show an error when the API fails
+
+  //update the state by editing the mix
+  yield put({
+    type: 'MIXES_EDIT_SAVE',
     mix: action.mix,
   });
 }

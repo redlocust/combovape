@@ -20,7 +20,7 @@ class RecipeEdit extends Component {
     let { mixId } = this.props.match.params;
     e.preventDefault();
     this.props.dispatch({
-      type: 'MIXES_ADD_EDIT',
+      type: 'MIXES_ADD',
       mix: {
         mixId: mixId || 0,
         author: this.state.author,
