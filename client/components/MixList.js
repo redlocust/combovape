@@ -14,7 +14,6 @@ class MixList extends Component {
 
     if (!isEmpty) {
       mixList = dataArray.map((mix, index) => {
-        console.log("mix._id", mix._id);
         return <div className="mix-item" key={index}>
           <div className="mix-item__first-row row">
             <div className="col-lg-2">

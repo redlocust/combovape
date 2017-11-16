@@ -62210,7 +62210,6 @@ var MixList = function (_Component) {
 
       if (!isEmpty) {
         mixList = dataArray.map(function (mix, index) {
-          console.log("mix._id", mix._id);
           return _react2.default.createElement(
             "div",
             { className: "mix-item", key: index },
@@ -62587,10 +62586,27 @@ var RecipeEdit = function (_Component) {
   }
 
   _createClass(RecipeEdit, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var mixId = this.props.match.params.mixId;
+
+      var mixes = this.props.mixes;
+      var mix = mixes.filter(function (elem) {
+        return elem._id === mixId;
+      })[0];
+
+      this.setState({
+        author: mix.author,
+        title: mix.title,
+        recipe: mix.recipe
+      });
+    }
+  }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       var mixId = this.props.match.params.mixId;
 
+      console.log(mixId);
       e.preventDefault();
       this.props.dispatch({
         type: 'MIXES_ADD',
@@ -62608,6 +62624,7 @@ var RecipeEdit = function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log("store in edit", this.props);
       return _react2.default.createElement(
         'div',
         { className: 'container' },
@@ -62666,7 +62683,16 @@ var RecipeEdit = function (_Component) {
   return RecipeEdit;
 }(_react.Component);
 
-exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)()(RecipeEdit));
+// export the connected class
+
+
+function mapStateToProps(state) {
+  return {
+    mixes: state.mixes
+  };
+}
+
+exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(RecipeEdit));
 
 /***/ }),
 /* 854 */

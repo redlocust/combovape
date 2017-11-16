@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { push } from "react-router-redux";
-import { withRouter } from 'react-router';
+import {push} from "react-router-redux";
+import {withRouter} from 'react-router';
 
 class RecipeEdit extends Component {
   // constructor
@@ -16,8 +16,23 @@ class RecipeEdit extends Component {
     }
   }
 
+  componentWillMount() {
+    let {mixId} = this.props.match.params;
+    let mixes = this.props.mixes;
+    let mix = mixes.filter((elem) => {
+      return elem._id === mixId;
+    })[0];
+
+    this.setState({
+      author: mix.author,
+      title: mix.title,
+      recipe: mix.recipe
+    });
+  }
+
   handleSubmit(e) {
-    let { mixId } = this.props.match.params;
+    let {mixId} = this.props.match.params;
+    console.log(mixId);
     e.preventDefault();
     this.props.dispatch({
       type: 'MIXES_ADD',
@@ -33,6 +48,7 @@ class RecipeEdit extends Component {
 
 
   render() {
+    console.log("store in edit", this.props);
     return (
       <div className='container'>
         <div className='row'>
@@ -64,4 +80,11 @@ class RecipeEdit extends Component {
   }
 }
 
-export default withRouter(connect()(RecipeEdit));
+// export the connected class
+function mapStateToProps(state) {
+  return {
+    mixes: state.mixes
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(RecipeEdit));
