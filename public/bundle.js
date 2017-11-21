@@ -61239,12 +61239,12 @@ var ApiMixes = function () {
     value: function editMix() {
 
       var mix = arguments[0];
-      var url = '/api/mixes';
+      var url = "/api/mixes/" + mix.mixId;
 
-      console.log("mix addEdit", mix);
+      console.log("mix Edit", mix);
 
       return fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
@@ -62578,9 +62578,9 @@ var RecipeEdit = function (_Component) {
     _this.handleSubmit = _this.handleSubmit.bind(_this);
 
     _this.state = {
-      author: '123',
-      title: '234',
-      recipe: '345'
+      author: 'author',
+      title: 'title',
+      recipe: 'recipe'
     };
     return _this;
   }
@@ -62594,22 +62594,40 @@ var RecipeEdit = function (_Component) {
       var mix = mixes.filter(function (elem) {
         return elem._id === mixId;
       })[0];
+      //TODO replace with "find"
 
-      this.setState({
-        author: mix.author,
-        title: mix.title,
-        recipe: mix.recipe
-      });
+      if (mix) {
+        this.setState({
+          author: mix.author,
+          title: mix.title,
+          recipe: mix.recipe
+        });
+      } else {
+        this.setState({
+          author: 'author',
+          title: 'title',
+          recipe: 'recipe'
+        });
+      }
     }
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       var mixId = this.props.match.params.mixId;
 
-      console.log(mixId);
+      var actionType = void 0;
       e.preventDefault();
+
+      if (mixId) {
+        console.log('ID exist', mixId);
+        actionType = 'MIXES_EDIT';
+      } else {
+        console.log('ID not exist', mixId);
+        actionType = 'MIXES_ADD';
+      }
+
       this.props.dispatch({
-        type: 'MIXES_ADD',
+        type: actionType,
         mix: {
           mixId: mixId || 0,
           author: this.state.author,

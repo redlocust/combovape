@@ -10,9 +10,9 @@ class RecipeEdit extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      author: '123',
-      title: '234',
-      recipe: '345'
+      author: 'author',
+      title: 'title',
+      recipe: 'recipe'
     }
   }
 
@@ -22,20 +22,38 @@ class RecipeEdit extends Component {
     let mix = mixes.filter((elem) => {
       return elem._id === mixId;
     })[0];
+    //TODO replace with "find"
 
-    this.setState({
-      author: mix.author,
-      title: mix.title,
-      recipe: mix.recipe
-    });
+    if (mix) {
+      this.setState({
+        author: mix.author,
+        title: mix.title,
+        recipe: mix.recipe
+      })
+    } else {
+      this.setState({
+        author: 'author',
+        title: 'title',
+        recipe: 'recipe'
+      })
+    }
   }
 
   handleSubmit(e) {
     let {mixId} = this.props.match.params;
-    console.log(mixId);
+    let actionType;
     e.preventDefault();
+
+    if (mixId) {
+      console.log('ID exist', mixId);
+      actionType = 'MIXES_EDIT'
+    } else {
+      console.log('ID not exist', mixId);
+      actionType = 'MIXES_ADD'
+    }
+
     this.props.dispatch({
-      type: 'MIXES_ADD',
+      type: actionType,
       mix: {
         mixId: mixId || 0,
         author: this.state.author,

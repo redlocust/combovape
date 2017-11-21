@@ -1,5 +1,4 @@
 import Mix from '../models/mix';
-import cuid from 'cuid';
 
 export function getMixes(req, res) {
   Mix.find({}, function (err, mixes) {
@@ -20,7 +19,7 @@ export function getMix(req, res) {
 
 
 export function deleteMix(req, res) {
-    Mix.remove({_id: req.params.mixcode})
+  Mix.remove({_id: req.params.mixcode})
     .then((mixes) => {
       res.json({post: mixes})
     })
@@ -38,7 +37,7 @@ export function deleteMixes(req, res) {
 
 export function addMix(req, res) {
 
-  console.log("body", req.body );
+  console.log("body", req.body);
 
   let mixArray = [{
     author: req.body.author,
@@ -76,9 +75,21 @@ export function seedMix(req, res) {
 
 
 export function updateMix(req, res) {
-  res.send(
+  console.log("req", req);
+  let mix = {
+    author: req.body.author,
+    title: req.body.title,
+    recipe: req.body.recipe
+  };
+
+  Mix.findOneAndUpdate({_id: req.params.mixcode},
     {
-      message: `Update: ${req.params.mixcode}`
-    }
-  );
+      author: mix.author,
+      title: mix.title,
+      recipe: mix.recipe
+    },)
+    .then((mixes) => {
+      res.json({post: mixes})
+    })
+    .catch((err) => res.json(err))
 }

@@ -72,12 +72,12 @@ export default class ApiMixes {
   static editMix() {
 
     let mix = arguments[0];
-    let url = '/api/mixes';
+    let url = `/api/mixes/${mix.mixId}`;
 
-    console.log("mix addEdit", mix);
+    console.log("mix Edit", mix);
 
     return fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=utf-8'
