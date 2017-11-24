@@ -7,8 +7,8 @@ class MixList extends Component {
   }
 
   render() {
-    let {dataArray} = this.props;
 
+    let {dataArray} = this.props;
     let isEmpty = Object.keys(dataArray).length === 0;
     let mixList = [];
 
@@ -17,7 +17,7 @@ class MixList extends Component {
         return <div className="mix-item" key={index}>
           <div className="mix-item__first-row row">
             <div className="col-lg-2">
-              <span className="mix-item__name">{index}</span>
+              <span className="mix-item__name">{index + 1}</span>
             </div>
             <div className="col-lg-4">
               <span className="mix-item__name">{mix.title}</span>

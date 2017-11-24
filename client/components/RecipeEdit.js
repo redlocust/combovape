@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from "react-router-redux";
-import {withRouter} from 'react-router';
+import {withRouter} from 'react-router-dom';
 
 class RecipeEdit extends Component {
   // constructor

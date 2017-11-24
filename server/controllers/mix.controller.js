@@ -6,7 +6,7 @@ export function getMixes(req, res) {
       res.status(500).send();
     }
     res.json(mixes);
-  })
+  }).limit(10)
 }
 
 export function getMix(req, res) {

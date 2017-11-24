@@ -60961,17 +60961,20 @@ function mixesFetchList(action) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return (0, _effects.call)(_mixes2.default.getList);
+          return (0, _effects.call)(_mixes2.default.getList, action.page);
 
         case 2:
           mixes = _context.sent;
-          _context.next = 5;
+
+          console.log("fetchList action:", action);
+          // save the users in state
+          _context.next = 6;
           return (0, _effects.put)({
             type: 'MIXES_LIST_SAVE',
             mixes: mixes
           });
 
-        case 5:
+        case 6:
         case "end":
           return _context.stop();
       }
@@ -61171,8 +61174,15 @@ var ApiMixes = function () {
 
     // get a list of mixes
     value: function getList() {
-      var url = '/api/mixes';
-
+      var page = arguments[0];
+      var url = '';
+      if (Object.getOwnPropertyNames(page).length !== 0) {
+        url = "/api/mixes/page/" + page.page;
+      } else {
+        url = "/api/mixes/";
+      }
+      console.log("page", page);
+      console.log("url", url);
       return fetch(url).then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -61366,6 +61376,7 @@ var _NotFound2 = _interopRequireDefault(_NotFound);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//const location = this.props.location;
 // build the router
 var router = _react2.default.createElement(
   _reactRouterRedux.ConnectedRouter,
@@ -62029,7 +62040,17 @@ var _MixList = __webpack_require__(851);
 
 var _MixList2 = _interopRequireDefault(_MixList);
 
+var _Pagination = __webpack_require__(881);
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
 var _reactRedux = __webpack_require__(51);
+
+var _queryString = __webpack_require__(883);
+
+var _queryString2 = _interopRequireDefault(_queryString);
+
+var _reactRouterDom = __webpack_require__(204);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62060,8 +62081,12 @@ var Main = function (_Component) {
   _createClass(Main, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      // the first time we load the app, we need that users list
-      this.props.dispatch({ type: 'MIXES_FETCH_LIST' });
+      // the first time we load the app, we need that mix list
+      var parsedPage = _queryString2.default.parse(this.props.location.search);
+      this.props.dispatch({
+        type: 'MIXES_FETCH_LIST',
+        page: parsedPage
+      });
     }
   }, {
     key: 'onSeedClick',
@@ -62140,7 +62165,8 @@ var Main = function (_Component) {
             _react2.default.createElement(
               'div',
               { className: 'text-center' },
-              _react2.default.createElement(_MixList2.default, { dataArray: mixes, onDeleteMixClick: this.onDeleteMix, onEditMixClick: this.onEditMix })
+              _react2.default.createElement(_MixList2.default, { dataArray: mixes, onDeleteMixClick: this.onDeleteMix, onEditMixClick: this.onEditMix }),
+              _react2.default.createElement(_Pagination2.default, null)
             )
           )
         )
@@ -62159,7 +62185,7 @@ function mapStateToProps(state) {
     mixes: state.mixes
   };
 }
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Main);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps)(Main));
 
 /***/ }),
 /* 851 */
@@ -62204,7 +62230,6 @@ var MixList = function (_Component) {
 
       var dataArray = this.props.dataArray;
 
-
       var isEmpty = Object.keys(dataArray).length === 0;
       var mixList = [];
 
@@ -62222,7 +62247,7 @@ var MixList = function (_Component) {
                 _react2.default.createElement(
                   "span",
                   { className: "mix-item__name" },
-                  index
+                  index + 1
                 )
               ),
               _react2.default.createElement(
@@ -62556,7 +62581,7 @@ var _reactRedux = __webpack_require__(51);
 
 var _reactRouterRedux = __webpack_require__(123);
 
-var _reactRouter = __webpack_require__(179);
+var _reactRouterDom = __webpack_require__(204);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62710,7 +62735,7 @@ function mapStateToProps(state) {
   };
 }
 
-exports.default = (0, _reactRouter.withRouter)((0, _reactRedux.connect)(mapStateToProps)(RecipeEdit));
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps)(RecipeEdit));
 
 /***/ }),
 /* 854 */
@@ -65881,6 +65906,460 @@ var jQuery = __webpack_require__(34);
 
 }(jQuery);
 
+
+
+/***/ }),
+/* 880 */,
+/* 881 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(51);
+
+var _reactRouterDom = __webpack_require__(204);
+
+var _config = __webpack_require__(882);
+
+var _queryString = __webpack_require__(883);
+
+var _queryString2 = _interopRequireDefault(_queryString);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Pagination = function (_Component) {
+  _inherits(Pagination, _Component);
+
+  // constructor
+  function Pagination(props) {
+    _classCallCheck(this, Pagination);
+
+    var _this = _possibleConstructorReturn(this, (Pagination.__proto__ || Object.getPrototypeOf(Pagination)).call(this, props));
+
+    _this.state = {
+      activePage: 0
+    };
+
+    _this.props.history.listen(function (location, action) {
+      var parsedPage = _queryString2.default.parse(location.search);
+      console.log("location", location);
+
+      _this.props.dispatch({
+        type: 'MIXES_FETCH_LIST',
+        page: parsedPage
+      });
+    });
+    return _this;
+  }
+
+  _createClass(Pagination, [{
+    key: 'render',
+    value: function render() {
+      var pageList = [];
+      var numberPage = Math.floor(this.props.mixes.length / _config.mixOnPage);
+      for (var i = 1; i <= numberPage; i++) {
+        var isActivePage = i === this.state.activePage ? "active" : "non-active";
+        pageList.push(_react2.default.createElement(
+          'li',
+          { key: i, className: isActivePage },
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: "?page=" + i },
+            i
+          )
+        ));
+      }
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+          'p',
+          null,
+          numberPage
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'pagination text-center' },
+          pageList
+        )
+      );
+    }
+  }]);
+
+  return Pagination;
+}(_react.Component);
+
+// export the connected class
+
+
+function mapStateToProps(state) {
+  return {
+    mixes: state.mixes,
+    location: state.location
+  };
+}
+
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps)(Pagination));
+
+/***/ }),
+/* 882 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var mixOnPage = exports.mixOnPage = 10;
+
+/***/ }),
+/* 883 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var strictUriEncode = __webpack_require__(884);
+var objectAssign = __webpack_require__(13);
+var decodeComponent = __webpack_require__(885);
+
+function encoderForArrayFormat(opts) {
+	switch (opts.arrayFormat) {
+		case 'index':
+			return function (key, value, index) {
+				return value === null ? [
+					encode(key, opts),
+					'[',
+					index,
+					']'
+				].join('') : [
+					encode(key, opts),
+					'[',
+					encode(index, opts),
+					']=',
+					encode(value, opts)
+				].join('');
+			};
+
+		case 'bracket':
+			return function (key, value) {
+				return value === null ? encode(key, opts) : [
+					encode(key, opts),
+					'[]=',
+					encode(value, opts)
+				].join('');
+			};
+
+		default:
+			return function (key, value) {
+				return value === null ? encode(key, opts) : [
+					encode(key, opts),
+					'=',
+					encode(value, opts)
+				].join('');
+			};
+	}
+}
+
+function parserForArrayFormat(opts) {
+	var result;
+
+	switch (opts.arrayFormat) {
+		case 'index':
+			return function (key, value, accumulator) {
+				result = /\[(\d*)\]$/.exec(key);
+
+				key = key.replace(/\[\d*\]$/, '');
+
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				}
+
+				if (accumulator[key] === undefined) {
+					accumulator[key] = {};
+				}
+
+				accumulator[key][result[1]] = value;
+			};
+
+		case 'bracket':
+			return function (key, value, accumulator) {
+				result = /(\[\])$/.exec(key);
+				key = key.replace(/\[\]$/, '');
+
+				if (!result) {
+					accumulator[key] = value;
+					return;
+				} else if (accumulator[key] === undefined) {
+					accumulator[key] = [value];
+					return;
+				}
+
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+
+		default:
+			return function (key, value, accumulator) {
+				if (accumulator[key] === undefined) {
+					accumulator[key] = value;
+					return;
+				}
+
+				accumulator[key] = [].concat(accumulator[key], value);
+			};
+	}
+}
+
+function encode(value, opts) {
+	if (opts.encode) {
+		return opts.strict ? strictUriEncode(value) : encodeURIComponent(value);
+	}
+
+	return value;
+}
+
+function keysSorter(input) {
+	if (Array.isArray(input)) {
+		return input.sort();
+	} else if (typeof input === 'object') {
+		return keysSorter(Object.keys(input)).sort(function (a, b) {
+			return Number(a) - Number(b);
+		}).map(function (key) {
+			return input[key];
+		});
+	}
+
+	return input;
+}
+
+exports.extract = function (str) {
+	var queryStart = str.indexOf('?');
+	if (queryStart === -1) {
+		return '';
+	}
+	return str.slice(queryStart + 1);
+};
+
+exports.parse = function (str, opts) {
+	opts = objectAssign({arrayFormat: 'none'}, opts);
+
+	var formatter = parserForArrayFormat(opts);
+
+	// Create an object with no prototype
+	// https://github.com/sindresorhus/query-string/issues/47
+	var ret = Object.create(null);
+
+	if (typeof str !== 'string') {
+		return ret;
+	}
+
+	str = str.trim().replace(/^[?#&]/, '');
+
+	if (!str) {
+		return ret;
+	}
+
+	str.split('&').forEach(function (param) {
+		var parts = param.replace(/\+/g, ' ').split('=');
+		// Firefox (pre 40) decodes `%3D` to `=`
+		// https://github.com/sindresorhus/query-string/pull/37
+		var key = parts.shift();
+		var val = parts.length > 0 ? parts.join('=') : undefined;
+
+		// missing `=` should be `null`:
+		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+		val = val === undefined ? null : decodeComponent(val);
+
+		formatter(decodeComponent(key), val, ret);
+	});
+
+	return Object.keys(ret).sort().reduce(function (result, key) {
+		var val = ret[key];
+		if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
+			// Sort object keys, not values
+			result[key] = keysSorter(val);
+		} else {
+			result[key] = val;
+		}
+
+		return result;
+	}, Object.create(null));
+};
+
+exports.stringify = function (obj, opts) {
+	var defaults = {
+		encode: true,
+		strict: true,
+		arrayFormat: 'none'
+	};
+
+	opts = objectAssign(defaults, opts);
+
+	var formatter = encoderForArrayFormat(opts);
+
+	return obj ? Object.keys(obj).sort().map(function (key) {
+		var val = obj[key];
+
+		if (val === undefined) {
+			return '';
+		}
+
+		if (val === null) {
+			return encode(key, opts);
+		}
+
+		if (Array.isArray(val)) {
+			var result = [];
+
+			val.slice().forEach(function (val2) {
+				if (val2 === undefined) {
+					return;
+				}
+
+				result.push(formatter(key, val2, result.length));
+			});
+
+			return result.join('&');
+		}
+
+		return encode(key, opts) + '=' + encode(val, opts);
+	}).filter(function (x) {
+		return x.length > 0;
+	}).join('&') : '';
+};
+
+
+/***/ }),
+/* 884 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
+
+/***/ }),
+/* 885 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
+}
+
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
+
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
+
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
+
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
+}
+
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
+
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
+
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
 
 
 /***/ })

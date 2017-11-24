@@ -4,7 +4,8 @@ import ApiMixes from "../api/mixes";
 // fetch the user's list
 export function* mixesFetchList(action) {
   // call the api to get the mix list
-  const mixes = yield call(ApiMixes.getList);
+  const mixes = yield call(ApiMixes.getList, action.page);
+  console.log("fetchList action:", action);
   // save the users in state
   yield put({
     type: 'MIXES_LIST_SAVE',

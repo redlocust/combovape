@@ -7,12 +7,13 @@ import Nav from "./components/Nav.js";
 import RecipeEdit from "./components/RecipeEdit.js";
 import NotFound from "./components/NotFound.js";
 
+//const location = this.props.location;
 // build the router
 const router = (
   <ConnectedRouter history={history}>
     <div>
       <Nav/>
-      <Switch>
+      <Switch >
         <Route path='/' exact component={Main}/>
         <Route path='/recipe-edit' exact component={RecipeEdit}/>
         <Route path='/recipe-edit/:mixId' component={RecipeEdit}/>

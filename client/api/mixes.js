@@ -3,8 +3,15 @@ export default class ApiMixes {
 
 // get a list of mixes
   static getList() {
-    let url = '/api/mixes';
-
+    let page = arguments[0];
+    let url = '';
+    if (Object.getOwnPropertyNames(page).length !== 0) {
+      url = `/api/mixes/page/${page.page}`;
+    } else {
+      url = `/api/mixes/`;
+    }
+    console.log("page", page);
+    console.log("url", url);
     return fetch(url)
       .then(function (response) {
         if (response.status >= 400) {
@@ -37,7 +44,6 @@ export default class ApiMixes {
         return response.json();
       });
   }
-
 
 
   // save new mix/ edited mix

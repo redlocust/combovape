@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import MixList from './MixList.js';
+import Pagination from './Pagination.js';
 import { connect } from "react-redux";
+import QueryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 
 class Main extends Component {
   constructor(props) {
@@ -14,8 +17,12 @@ class Main extends Component {
 
   // pre-render logic
   componentWillMount() {
-    // the first time we load the app, we need that users list
-    this.props.dispatch({type: 'MIXES_FETCH_LIST'});
+    // the first time we load the app, we need that mix list
+    const parsedPage = QueryString.parse(this.props.location.search);
+    this.props.dispatch({
+      type: 'MIXES_FETCH_LIST',
+      page: parsedPage
+    });
   }
 
   onSeedClick(e) {
@@ -65,6 +72,7 @@ class Main extends Component {
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
               <MixList dataArray={mixes} onDeleteMixClick={this.onDeleteMix} onEditMixClick={this.onEditMix}/>
+              <Pagination />
             </div>
           </div>
         </div>
@@ -79,4 +87,4 @@ function mapStateToProps(state) {
     mixes: state.mixes
   };
 }
-export default connect(mapStateToProps)(Main);
+export default withRouter(connect(mapStateToProps)(Main));
