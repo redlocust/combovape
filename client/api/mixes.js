@@ -5,11 +5,11 @@ export default class ApiMixes {
   static getList() {
     let page = arguments[0];
     let url = '';
-    if (Object.getOwnPropertyNames(page).length !== 0) {
-      url = `/api/mixes/page/${page.page}`;
-    } else {
+    // if (Object.getOwnPropertyNames(page).length !== 0) {
+    //   url = `/api/mixes/page/${page.page}`;
+    // } else {
       url = `/api/mixes/`;
-    }
+    //}
     console.log("page", page);
     console.log("url", url);
     return fetch(url)

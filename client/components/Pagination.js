@@ -10,12 +10,13 @@ class Pagination extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePage: 0
+      activePage: 1
     };
 
     this.props.history.listen((location, action) => {
-      const parsedPage = QueryString.parse(location.search);
+      const parsedPage =  +QueryString.parse(location.search).page;
       console.log("location", location);
+      this.setState({activePage: parsedPage});
 
       this.props.dispatch({
         type: 'MIXES_FETCH_LIST',
@@ -26,7 +27,7 @@ class Pagination extends Component {
 
   render() {
     let pageList = [];
-    let numberPage = Math.floor(this.props.mixes.length / mixOnPage);
+    let numberPage = Math.ceil(this.props.mixes.length / mixOnPage);
     for (let i = 1; i <= numberPage; i++) {
       let isActivePage = (i === this.state.activePage) ? "active" : "non-active";
       pageList.push(<li key={i} className={isActivePage}><Link to={"?page=" + i}>{i}</Link></li>)

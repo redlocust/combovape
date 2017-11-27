@@ -56,6 +56,7 @@ class Main extends Component {
 
   render() {
     const {mixes} = this.props;
+    const parsedPage = + (QueryString.parse(this.props.location.search).page || "1");
 
     return (
       <div className="container">
@@ -71,7 +72,7 @@ class Main extends Component {
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <div className="text-center">
-              <MixList dataArray={mixes} onDeleteMixClick={this.onDeleteMix} onEditMixClick={this.onEditMix}/>
+              <MixList dataArray={mixes} currentPage = {parsedPage} onDeleteMixClick={this.onDeleteMix} onEditMixClick={this.onEditMix}/>
               <Pagination />
             </div>
           </div>
@@ -84,7 +85,8 @@ class Main extends Component {
 // export the connected class
 function mapStateToProps(state) {
   return {
-    mixes: state.mixes
+    mixes: state.mixes,
+    activePage: state.activePage
   };
 }
 export default withRouter(connect(mapStateToProps)(Main));

@@ -1,15 +1,21 @@
 import { call, put } from "redux-saga/effects";
 import ApiMixes from "../api/mixes";
+import { mixOnPage } from '../configs/config';
 
-// fetch the user's list
+// fetch the mixes's list
 export function* mixesFetchList(action) {
   // call the api to get the mix list
   const mixes = yield call(ApiMixes.getList, action.page);
-  console.log("fetchList action:", action);
-  // save the users in state
+  // save the mixes in state
   yield put({
     type: 'MIXES_LIST_SAVE',
     mixes: mixes,
+    activePage: action.page
+  });
+
+  yield put({
+    type: 'CHANGE_ACTIVE_PAGE',
+    activePage: action.page || '1'
   });
 }
 

@@ -1,6 +1,14 @@
-import { takeLatest } from "redux-saga";
-import { fork } from "redux-saga/effects";
-import { mixesFetchList, mixesAdd, mixesEdit, mixesSeedList, mixesDeleteList, mixesDelete, mixesFetchMix } from "./mixes";
+import {takeLatest} from "redux-saga";
+import {fork} from "redux-saga/effects";
+import {
+  mixesFetchList,
+  mixesAdd,
+  mixesEdit,
+  mixesSeedList,
+  mixesDeleteList,
+  mixesDelete,
+  mixesFetchMix
+} from "./mixes";
 
 // main saga generators
 export function* sagas() {
